@@ -1,4 +1,4 @@
-package tsp.smartplugin.util.tasker;
+package tsp.smartplugin.tasker;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

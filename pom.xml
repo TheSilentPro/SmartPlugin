@@ -37,12 +37,6 @@
             <artifactId>XSeries</artifactId>
             <version>7.5.4</version>
         </dependency>
-        <!-- Storage Lib -->
-        <dependency>
-            <groupId>com.github.simplix-softworks</groupId>
-            <artifactId>simplixstorage</artifactId>
-            <version>3.2.0</version>
-        </dependency>
     </dependencies>
 
     <build>

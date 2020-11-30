@@ -7,7 +7,7 @@ public class SmartPlugin {
 
     private static JavaPlugin instance;
 
-    public void init(JavaPlugin plugin) {
+    public static void init(JavaPlugin plugin) {
         instance = plugin;
 
         new PaneListener(plugin);
