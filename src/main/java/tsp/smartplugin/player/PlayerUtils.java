@@ -1,5 +1,7 @@
 package tsp.smartplugin.player;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,6 +19,14 @@ import java.util.UUID;
  * Utility class for a {@link Player}
  */
 public class PlayerUtils {
+
+    public static String colorize(String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    public static void sendMessage(CommandSender player, String message) {
+        player.sendMessage(colorize(message));
+    }
 
     public static int getPing(Player player) {
         try {

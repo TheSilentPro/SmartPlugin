@@ -53,7 +53,7 @@ public class Tasker {
     }
 
     public static BukkitTask syncLater(Runnable task, long delay) {
-        return SCHEDULER.runTaskLater(plugin, task::run, delay);
+        return SCHEDULER.runTaskLater(plugin, task, delay);
     }
 
     public static List<BukkitTask> syncLater(long delay, Runnable... tasks) {
@@ -113,7 +113,7 @@ public class Tasker {
     }
 
     public static BukkitTask asyncTimer(Runnable task, long delay, long repeat) {
-        return SCHEDULER.runTaskTimerAsynchronously(plugin, task::run, delay, repeat);
+        return SCHEDULER.runTaskTimerAsynchronously(plugin, task, delay, repeat);
     }
 
     public static BukkitTask asyncTimer(Runnable task, long repeat) {

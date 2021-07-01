@@ -1,8 +1,9 @@
-package tsp.smartplugin.util;
+package tsp.smartplugin.server;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import tsp.smartplugin.SmartPlugin;
+import tsp.smartplugin.player.PlayerUtils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -14,7 +15,7 @@ import java.io.StringWriter;
  */
 public class Log {
 
-    private static String name = SmartPlugin.getInstance().getName();
+    private static String name = "&cHeadDB";
 
     public static void info(String message) {
         log(LogLevel.INFO, message);
@@ -37,12 +38,15 @@ public class Log {
     }
 
     public static void log(LogLevel level, String message) {
-        Bukkit.getConsoleSender().sendMessage(Utils.colorize("&7[&9&l" + name + "&7] " + level.getColor() + "[" + level.name() + "]: " + message));
+        if (level == LogLevel.DEBUG && !SmartPlugin.isDebug()) {
+            return;
+        }
+        Bukkit.getConsoleSender().sendMessage(PlayerUtils.colorize("&7[&9&l" + name + "&7] " + level.getColor() + "[" + level.name() + "]: " + message));
     }
 
     public static void log(Throwable ex) {
-        Bukkit.getConsoleSender().sendMessage(Utils.colorize("&7[" + name + "&7] " + "&4&l[EXCEPTION]: " + ex.getMessage()));
-        Bukkit.getConsoleSender().sendMessage(Utils.colorize("&4&l[StackTrace]: " + getStackTrace(ex)));
+        Bukkit.getConsoleSender().sendMessage(PlayerUtils.colorize("&7[" + name + "&7] " + "&4&l[EXCEPTION]: " + ex.getMessage()));
+        Bukkit.getConsoleSender().sendMessage(PlayerUtils.colorize("&4&l[StackTrace]: " + getStackTrace(ex)));
     }
 
     public static void setName(String logName) {
