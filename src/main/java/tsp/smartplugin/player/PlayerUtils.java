@@ -24,8 +24,12 @@ public class PlayerUtils {
         return ChatColor.translateAlternateColorCodes('&', string);
     }
 
-    public static void sendMessage(CommandSender player, String message) {
-        player.sendMessage(colorize(message));
+    public static void sendConfigMessage(CommandSender receiver, String key) {
+        receiver.sendMessage(MessageUtils.getMessage(key));
+    }
+
+    public static void sendMessage(CommandSender receiver, String message) {
+        receiver.sendMessage(colorize(message));
     }
 
     public static int getPing(Player player) {

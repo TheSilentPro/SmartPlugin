@@ -2,7 +2,6 @@ package tsp.smartplugin.server;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import tsp.smartplugin.SmartPlugin;
 import tsp.smartplugin.player.PlayerUtils;
 
 import java.io.PrintWriter;
@@ -15,7 +14,8 @@ import java.io.StringWriter;
  */
 public class Log {
 
-    private static String name = "&cHeadDB";
+    private static String name = "&bSmartPlugin";
+    private static boolean debug = false;
 
     public static void info(String message) {
         log(LogLevel.INFO, message);
@@ -38,7 +38,7 @@ public class Log {
     }
 
     public static void log(LogLevel level, String message) {
-        if (level == LogLevel.DEBUG && !SmartPlugin.isDebug()) {
+        if (level == LogLevel.DEBUG && !debug) {
             return;
         }
         Bukkit.getConsoleSender().sendMessage(PlayerUtils.colorize("&7[&9&l" + name + "&7] " + level.getColor() + "[" + level.name() + "]: " + message));
@@ -55,6 +55,14 @@ public class Log {
 
     public static String getName() {
         return name;
+    }
+
+    public static boolean isDebug() {
+        return debug;
+    }
+
+    public static void setDebug(boolean debug) {
+        Log.debug = debug;
     }
 
     public static String getStackTrace(Throwable throwable) {
