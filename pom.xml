@@ -38,8 +38,8 @@
                     <excludes>
                         <exclude>**/package-info.java</exclude>
                     </excludes>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
         </plugins>
