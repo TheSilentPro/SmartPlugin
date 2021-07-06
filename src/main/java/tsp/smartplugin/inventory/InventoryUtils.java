@@ -6,6 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import tsp.smartplugin.inventory.paged.PagedPane;
 import tsp.smartplugin.inventory.single.Pane;
 
+import java.util.Arrays;
+
 /**
  * Utility class for managing inventories
  *
@@ -109,13 +111,7 @@ public class InventoryUtils {
      * @return If the number was found in the array
      */
     public static boolean contains(int n, int... array) {
-        for (int i : array) {
-            if (i == n) {
-                return true;
-            }
-        }
-
-        return false;
+        return Arrays.binarySearch(array, n) > -1;
     }
 
 }
