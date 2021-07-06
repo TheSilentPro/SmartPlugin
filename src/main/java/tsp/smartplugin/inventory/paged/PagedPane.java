@@ -1,6 +1,5 @@
 package tsp.smartplugin.inventory.paged;
 
-import com.cryptomorin.xseries.XMaterial;
 import tsp.smartplugin.inventory.shared.Button;
 import tsp.smartplugin.inventory.shared.Page;
 import org.bukkit.Bukkit;
@@ -198,7 +197,7 @@ public class PagedPane implements InventoryHolder {
         // create separator
         fillRow(
                 inventory.getSize() / 9 - 2,
-                getItemStack(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial(), " "),
+                getItemStack(Material.BLACK_STAINED_GLASS_PANE, " "),
                 inventory
         );
 
@@ -267,7 +266,7 @@ public class PagedPane implements InventoryHolder {
      */
     @SuppressWarnings("WeakerAccess")
     protected ItemStack getItemStack(Material type, String name, String... lore) {
-        ItemStack itemStack = XMaterial.matchXMaterial(type).parseItem();
+        ItemStack itemStack = new ItemStack(type);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 
