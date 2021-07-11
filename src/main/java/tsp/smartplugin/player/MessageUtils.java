@@ -42,7 +42,7 @@ public class MessageUtils {
 
     public static void load(FileConfiguration messagesFile) {
         for (String key : messagesFile.getConfigurationSection(section).getKeys(false)) {
-            MESSAGES.put(key, messagesFile.getString(section + key));
+            MESSAGES.put(key, messagesFile.getString(section + "." + key));
         }
     }
 
