@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.annotation.Nullable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,20 +22,49 @@ import java.util.function.UnaryOperator;
  */
 public class PlayerUtils {
 
+    public static void sendConfigMessage(CommandSender receiver, String key, UnaryOperator<String> function, String... args) {
+        String message = MessageUtils.getMessage(key);
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                message = message.replace("$" + i, args[i]);
+            }
+        }
+
+        receiver.sendMessage(MessageUtils.colorize(function != null ? function.apply(message) : message));
+    }
+
     public static void sendConfigMessage(CommandSender receiver, String key, UnaryOperator<String> function) {
-        receiver.sendMessage(MessageUtils.colorize(function.apply(MessageUtils.getMessage(key))));
+        sendConfigMessage(receiver, key, function, (String[]) null);
+    }
+
+    public static void sendConfigMessage(CommandSender receiver, String key, String... args) {
+        sendConfigMessage(receiver, key, null, args);
     }
 
     public static void sendConfigMessage(CommandSender receiver, String key) {
-        receiver.sendMessage(MessageUtils.colorize(MessageUtils.getMessage(key)));
+        sendConfigMessage(receiver, key, null, (String[]) null);
+    }
+
+    public static void sendMessage(CommandSender receiver, String message, @Nullable UnaryOperator<String> function, @Nullable String... args) {
+        if (args != null) {
+            for (int i = 0; i < args.length; i++) {
+                message = message.replace("$" + i, args[i]);
+            }
+        }
+
+        receiver.sendMessage(MessageUtils.colorize(function != null ? function.apply(message) : message));
     }
 
     public static void sendMessage(CommandSender receiver, String message, UnaryOperator<String> function) {
-        receiver.sendMessage(MessageUtils.colorize(function.apply(message)));
+        sendMessage(receiver, message, function, (String[]) null);
+    }
+
+    public static void sendMessage(CommandSender receiver, String message, String... args) {
+        sendMessage(receiver, message, null, args);
     }
 
     public static void sendMessage(CommandSender receiver, String message) {
-        receiver.sendMessage(MessageUtils.colorize(message));
+        sendMessage(receiver, message, null, (String[]) null);
     }
 
     public static int getPing(Player player) {
