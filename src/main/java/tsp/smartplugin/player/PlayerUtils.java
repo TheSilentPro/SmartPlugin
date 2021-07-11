@@ -1,6 +1,5 @@
 package tsp.smartplugin.player;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
@@ -14,22 +13,27 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.UUID;
+import java.util.function.UnaryOperator;
 
 /**
  * Utility class for a {@link Player}
  */
 public class PlayerUtils {
 
-    public static String colorize(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
+    public static void sendConfigMessage(CommandSender receiver, String key, UnaryOperator<String> function) {
+        MessageUtils.sendMessage(receiver, function.apply(MessageUtils.getMessage(key)));
     }
 
     public static void sendConfigMessage(CommandSender receiver, String key) {
-        receiver.sendMessage(MessageUtils.getMessage(key));
+        MessageUtils.sendMessage(receiver, MessageUtils.getMessage(key));
+    }
+
+    public static void sendMessage(CommandSender receiver, String message, UnaryOperator<String> function) {
+        MessageUtils.sendMessage(receiver, function.apply(message));
     }
 
     public static void sendMessage(CommandSender receiver, String message) {
-        receiver.sendMessage(colorize(message));
+        MessageUtils.sendMessage(receiver, message);
     }
 
     public static int getPing(Player player) {
