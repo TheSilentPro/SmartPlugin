@@ -2,6 +2,7 @@ package tsp.smartplugin.player;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -21,19 +22,19 @@ import java.util.function.UnaryOperator;
 public class PlayerUtils {
 
     public static void sendConfigMessage(CommandSender receiver, String key, UnaryOperator<String> function) {
-        MessageUtils.sendMessage(receiver, function.apply(MessageUtils.getMessage(key)));
+        receiver.sendMessage(MessageUtils.colorize(function.apply(MessageUtils.getMessage(key))));
     }
 
     public static void sendConfigMessage(CommandSender receiver, String key) {
-        MessageUtils.sendMessage(receiver, MessageUtils.getMessage(key));
+        receiver.sendMessage(MessageUtils.colorize(MessageUtils.getMessage(key)));
     }
 
     public static void sendMessage(CommandSender receiver, String message, UnaryOperator<String> function) {
-        MessageUtils.sendMessage(receiver, function.apply(message));
+        receiver.sendMessage(MessageUtils.colorize(function.apply(message)));
     }
 
     public static void sendMessage(CommandSender receiver, String message) {
-        MessageUtils.sendMessage(receiver, message);
+        receiver.sendMessage(MessageUtils.colorize(message));
     }
 
     public static int getPing(Player player) {
@@ -75,6 +76,36 @@ public class PlayerUtils {
         JSONParser parser = new JSONParser();
         JSONObject obj = (JSONObject) parser.parse(response.toString());
         return UUID.fromString(obj.get("id").toString());
+    }
+
+    public static SkinInfo getSkinInfo(UUID uuid) throws IOException, ParseException {
+        return getSkinInfo(uuid, 5000);
+    }
+
+    public static SkinInfo getSkinInfo(UUID uuid, int timeout) throws IOException, ParseException {
+        String req = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", "") + "?unsigned=false";
+        String line;
+        StringBuilder response = new StringBuilder();
+        URLConnection connection = new URL(req).openConnection();
+        connection.setConnectTimeout(timeout);
+        connection.setRequestProperty("User-Agent", "SmartPlugin-SkinFetcher");
+        try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                        connection.getInputStream()))) {
+            while ((line = in.readLine()) != null) {
+                response.append(line);
+            }
+        }
+        JSONParser parser = new JSONParser();
+        JSONObject obj = (JSONObject) parser.parse(response.toString());
+        JSONArray properties = (JSONArray) obj.get("properties");
+        JSONObject textures = (JSONObject) properties.get(0);
+        
+        String id = obj.get("id").toString();
+        String name = obj.get("name").toString();
+        String value = textures.get("value").toString();
+        String signature = textures.get("signature").toString();
+        return new SkinInfo(id, name, value, signature);
     }
 
 }
