@@ -11,10 +11,12 @@ import java.util.Map;
  *
  * @author TheSilentPro
  */
-public class MessageUtils {
+public final class MessageUtils {
 
     private static final Map<String, String> MESSAGES = new HashMap<>();
     private static String section = "messages";
+
+    private MessageUtils() {}
 
     public static String colorize(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);

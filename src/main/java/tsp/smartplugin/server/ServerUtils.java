@@ -8,7 +8,9 @@ import tsp.smartplugin.player.MessageUtils;
  *
  * @author TheSilentPro
  */
-public class ServerUtils {
+public final class ServerUtils {
+
+    private ServerUtils() {}
 
     public static void broadcast(String message) {
         Bukkit.broadcastMessage(MessageUtils.colorize(message));

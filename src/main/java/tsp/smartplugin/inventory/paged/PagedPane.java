@@ -1,7 +1,7 @@
 package tsp.smartplugin.inventory.paged;
 
-import tsp.smartplugin.inventory.shared.Button;
-import tsp.smartplugin.inventory.shared.Page;
+import tsp.smartplugin.inventory.Button;
+import tsp.smartplugin.inventory.Page;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

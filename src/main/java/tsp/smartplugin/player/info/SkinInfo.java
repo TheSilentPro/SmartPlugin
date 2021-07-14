@@ -1,4 +1,4 @@
-package tsp.smartplugin.player;
+package tsp.smartplugin.player.info;
 
 public class SkinInfo {
 

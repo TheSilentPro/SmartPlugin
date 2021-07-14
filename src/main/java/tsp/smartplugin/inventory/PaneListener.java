@@ -1,4 +1,4 @@
-package tsp.smartplugin.inventory.shared;
+package tsp.smartplugin.inventory;
 
 import tsp.smartplugin.inventory.paged.PagedPane;
 import tsp.smartplugin.inventory.single.Pane;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Listens for click events for the {@link PagedPane}
+ * Listens for click events for the {@link PagedPane} and {@link Pane}
  */
 public class PaneListener implements Listener {
 

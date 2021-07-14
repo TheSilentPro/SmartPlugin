@@ -12,10 +12,12 @@ import java.io.StringWriter;
  *
  * @author TheSilentPro
  */
-public class Log {
+public final class Log {
 
     private static String name = "&bSmartPlugin";
     private static boolean debug = false;
+
+    private Log() {}
 
     public static void info(String message) {
         log(LogLevel.INFO, message);

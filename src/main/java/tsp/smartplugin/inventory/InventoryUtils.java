@@ -93,7 +93,7 @@ public class InventoryUtils {
 
         // Fill
         for (int i = 0; i < size; i++) {
-            if (!contains(i, ignored)) {
+            if (ignored != null && !contains(i, ignored)) {
                 ItemStack slotItem = inv.getItem(i);
                 if (slotItem == null || slotItem.getType() == Material.AIR) {
                     inv.setItem(i, item);

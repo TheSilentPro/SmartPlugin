@@ -1,8 +1,8 @@
 package tsp.smartplugin.inventory.single;
 
 import org.bukkit.entity.Player;
-import tsp.smartplugin.inventory.shared.Button;
-import tsp.smartplugin.inventory.shared.Page;
+import tsp.smartplugin.inventory.Button;
+import tsp.smartplugin.inventory.Page;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;

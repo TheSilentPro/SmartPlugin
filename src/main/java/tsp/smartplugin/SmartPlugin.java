@@ -1,7 +1,7 @@
 package tsp.smartplugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import tsp.smartplugin.inventory.shared.PaneListener;
+import tsp.smartplugin.inventory.PaneListener;
 import tsp.smartplugin.server.Log;
 
 public class SmartPlugin {
