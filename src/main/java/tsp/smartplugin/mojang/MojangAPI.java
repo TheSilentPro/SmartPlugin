@@ -91,4 +91,23 @@ public class MojangAPI {
         return getBlockedServers(5000);
     }
 
+    public static JSONArray getServiceStatus(int timeout) throws IOException, ParseException {
+        String req = "https://status.mojang.com/check";
+        String line;
+        StringBuilder response = new StringBuilder();
+        URLConnection connection = new URL(req).openConnection();
+        connection.setConnectTimeout(timeout);
+        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getName() + "-StatusFetcher");
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        while((line = in.readLine()) != null) {
+            response.append(line);
+        }
+
+        return (JSONArray) new JSONParser().parse(response.toString());
+    }
+
+    public static JSONArray getServiceStatus() throws IOException, ParseException {
+        return getServiceStatus(50000);
+    }
+
 }

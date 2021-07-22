@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ItemBuilder for 1.16.5
+ * Class for building an {@link ItemStack}
  *
  * @author TheSilentPro
  */

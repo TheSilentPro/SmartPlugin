@@ -9,6 +9,7 @@ import tsp.smartplugin.mojang.MojangAPI;
 import tsp.smartplugin.player.info.NameHistory;
 import tsp.smartplugin.player.info.PlayerInfo;
 import tsp.smartplugin.player.info.SkinInfo;
+import tsp.smartplugin.server.ServerVersion;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
@@ -71,6 +73,10 @@ public final class PlayerUtils {
     }
 
     public static int getPing(Player player) {
+        if (ServerVersion.getVersion().isHigherThanOrEquals(ServerVersion.v_1_17)) {
+            return player.getPing();
+        }
+
         try {
             Object entityPlayer = player.getClass().getMethod("getHandle").invoke(player);
             return (int) entityPlayer.getClass().getField("ping").get(entityPlayer);
@@ -84,20 +90,44 @@ public final class PlayerUtils {
         return new PlayerInfo(uuid, getSkinInfo(uuid), getNameHistory(uuid));
     }
 
-    public static UUID fetchUniqueId(String name, int timeout) throws IOException, ParseException {
+    public static PlayerInfo getPlayerInfo(String name) throws IOException, ParseException {
+        UUID uuid = getUniqueId(name);
+
+        return new PlayerInfo(uuid, getSkinInfo(uuid), getNameHistory(uuid));
+    }
+
+    public static UUID getUniqueId(String name, int timeout) throws IOException, ParseException {
         JSONObject obj = MojangAPI.getUniqueId(name, timeout);
         return UUID.fromString(obj.get("id").toString());
     }
 
-    public static UUID fetchUniqueId(String name) throws IOException, ParseException {
-        return fetchUniqueId(name, 5000);
+    public static UUID getUniqueId(String name) throws IOException, ParseException {
+        return getUniqueId(name, 5000);
     }
 
-    public UUID fetchUniqueIdNoException(String name) {
+    public static void getUniqueId(String name, Consumer<UUID> uniqueId, Consumer<IOException> ex, Consumer<ParseException> pex) {
         try {
-            return fetchUniqueId(name);
+            uniqueId.accept(getUniqueId(name));
+        } catch (IOException io) {
+            ex.accept(io);
+        } catch (ParseException parse) {
+            pex.accept(parse);
+        }
+    }
+
+    public static UUID getUniqueIdNoException(String name) {
+        try {
+            return getUniqueId(name);
         } catch (IOException | ParseException ignored) {
             return null;
+        }
+    }
+
+    public void getUniqueId(String name, Consumer<UUID> uniqueId) {
+        try {
+            uniqueId.accept(getUniqueId(name));
+        } catch (IOException | ParseException ignored) {
+            return;
         }
     }
 

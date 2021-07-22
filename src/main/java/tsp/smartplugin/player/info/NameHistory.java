@@ -7,7 +7,7 @@ import java.util.UUID;
 public class NameHistory {
 
     private final UUID uuid;
-    private final Map<String, Long> history;
+    private final Map<String, Long> history; // name, changed(timestamp)
 
     public NameHistory(UUID uuid, Map<String, Long> history) {
         this.uuid = uuid;
@@ -19,7 +19,7 @@ public class NameHistory {
         return new Date(timestamp);
     }
 
-    public Map<String, Long> getHistoryMap() {
+    public Map<String, Long> getHistory() {
         return history;
     }
 
