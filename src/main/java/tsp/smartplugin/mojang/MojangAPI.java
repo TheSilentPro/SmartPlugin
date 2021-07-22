@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MojangAPI {
+public final class MojangAPI {
+
+    private MojangAPI() {}
 
     public static JSONObject getUniqueId(String name, int timeout) throws IOException, ParseException {
         String req = "https://api.mojang.com/users/profiles/minecraft/" + name;

@@ -13,7 +13,9 @@ import java.util.Arrays;
  *
  * @author TheSilentPro
  */
-public class InventoryUtils {
+public final class InventoryUtils {
+
+    private InventoryUtils() {}
 
     /**
      * Creates a {@link PagedPane}
