@@ -6,17 +6,21 @@ import tsp.smartplugin.server.Log;
 
 public class SmartPlugin {
 
-    private static JavaPlugin instance;
+    private static final SmartPlugin instance = new SmartPlugin();
+    private JavaPlugin plugin;
 
     public static void init(JavaPlugin plugin) {
-        instance = plugin;
+        instance.plugin = plugin;
 
         Log.setName(plugin.getName());
         new PaneListener(plugin);
     }
 
-    public static JavaPlugin getInstance() {
-        return instance;
+    public JavaPlugin getPlugin() {
+        return plugin;
     }
 
+    public static SmartPlugin getInstance() {
+        return instance;
+    }
 }

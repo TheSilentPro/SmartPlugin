@@ -25,7 +25,7 @@ public final class MojangAPI {
         StringBuilder response = new StringBuilder();
         URLConnection connection = new URL(req).openConnection();
         connection.setConnectTimeout(timeout);
-        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getName() + "-UUIDFetcher");
+        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getPlugin().getName() + "-UUIDFetcher");
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         while((line = in.readLine()) != null) {
             response.append(line);
@@ -41,7 +41,7 @@ public final class MojangAPI {
         StringBuilder response = new StringBuilder();
         URLConnection connection = new URL(req).openConnection();
         connection.setConnectTimeout(timeout);
-        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getName() + "-SkinFetcher");
+        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getPlugin().getName() + "-SkinFetcher");
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         while((line = in.readLine()) != null) {
             response.append(line);
@@ -61,7 +61,7 @@ public final class MojangAPI {
         StringBuilder response = new StringBuilder();
         URLConnection connection = new URL(req).openConnection();
         connection.setConnectTimeout(timeout);
-        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getName() + "-NameHistoryFetcher");
+        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getPlugin().getName() + "-NameHistoryFetcher");
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         while((line = in.readLine()) != null) {
             response.append(line);
@@ -80,7 +80,7 @@ public final class MojangAPI {
         List<String> blockedServers = new ArrayList<>();
         URLConnection connection = new URL(req).openConnection();
         connection.setConnectTimeout(timeout);
-        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getName() + "-BlockedServersFetcher");
+        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getPlugin().getName() + "-BlockedServersFetcher");
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         while((line = in.readLine()) != null) {
             blockedServers.add(line);
@@ -99,7 +99,7 @@ public final class MojangAPI {
         StringBuilder response = new StringBuilder();
         URLConnection connection = new URL(req).openConnection();
         connection.setConnectTimeout(timeout);
-        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getName() + "-StatusFetcher");
+        connection.setRequestProperty("User-Agent", SmartPlugin.getInstance().getPlugin().getName() + "-StatusFetcher");
         BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         while((line = in.readLine()) != null) {
             response.append(line);

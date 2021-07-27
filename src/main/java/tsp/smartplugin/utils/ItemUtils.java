@@ -8,8 +8,8 @@ import tsp.smartplugin.data.PersistentDataAPI;
 
 public class ItemUtils {
 
-    public static final NamespacedKey COOLDOWN_KEY = new NamespacedKey(SmartPlugin.getInstance(), "item_cooldown");
-    public static final NamespacedKey LAST_USED_KEY = new NamespacedKey(SmartPlugin.getInstance(), "item_lastused");
+    public static final NamespacedKey COOLDOWN_KEY = new NamespacedKey(SmartPlugin.getInstance().getPlugin(), "item_cooldown");
+    public static final NamespacedKey LAST_USED_KEY = new NamespacedKey(SmartPlugin.getInstance().getPlugin(), "item_lastused");
 
     /**
      * Add cooldown to an item
