@@ -6,6 +6,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import tsp.smartplugin.SmartPlugin;
 import tsp.smartplugin.data.PersistentDataAPI;
 
+import java.util.function.Consumer;
+
 public class ItemUtils {
 
     public static final NamespacedKey COOLDOWN_KEY = new NamespacedKey(SmartPlugin.getInstance().getPlugin(), "item_cooldown");
@@ -17,7 +19,7 @@ public class ItemUtils {
      * @param item The item to add a cooldown to
      * @param time The cooldown time
      */
-    public static void addCooldown(ItemStack item, int time) {
+    public static void addCooldown(ItemStack item, long time) {
         if (time > -1) {
             ItemMeta meta = item.getItemMeta();
             PersistentDataAPI.setLong(meta, COOLDOWN_KEY, time);
@@ -41,6 +43,25 @@ public class ItemUtils {
         }
 
         return ((l + time * 1000) - System.currentTimeMillis()) / 1000;
+    }
+
+    public static void use(ItemStack item, Consumer<Boolean> ready, Consumer<Long> unready) {
+        long time = getTimeLeft(item);
+        if (time < 1) {
+            ready.accept(true);
+        } else {
+            unready.accept(time);
+        }
+    }
+    
+    public static void use(ItemStack item, long cooldown, Consumer<Boolean> ready, Consumer<Long> unready) {
+        long time = getTimeLeft(item);
+        if (time < 1) {
+            ready.accept(true);
+            addCooldown(item, cooldown);
+        } else {
+            unready.accept(time);
+        }
     }
 
 }

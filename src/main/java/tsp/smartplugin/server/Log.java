@@ -2,7 +2,7 @@ package tsp.smartplugin.server;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import tsp.smartplugin.player.MessageUtils;
+import tsp.smartplugin.utils.ChatUtils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -43,12 +43,12 @@ public final class Log {
         if (level == LogLevel.DEBUG && !debug) {
             return;
         }
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.colorize("&7[&9&l" + name + "&7] " + level.getColor() + "[" + level.name() + "]: " + message));
+        Bukkit.getConsoleSender().sendMessage(ChatUtils.colorize("&7[&9&l" + name + "&7] " + level.getColor() + "[" + level.name() + "]: " + message));
     }
 
     public static void log(Throwable ex) {
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.colorize("&7[" + name + "&7] " + "&4&l[EXCEPTION]: " + ex.getMessage()));
-        Bukkit.getConsoleSender().sendMessage(MessageUtils.colorize("&4&l[StackTrace]: " + getStackTrace(ex)));
+        Bukkit.getConsoleSender().sendMessage(ChatUtils.colorize("&7[" + name + "&7] " + "&4&l[EXCEPTION]: " + ex.getMessage()));
+        Bukkit.getConsoleSender().sendMessage(ChatUtils.colorize("&4&l[StackTrace]: " + getStackTrace(ex)));
     }
 
     public static void setName(String logName) {

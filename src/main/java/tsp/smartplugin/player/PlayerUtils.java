@@ -1,5 +1,6 @@
 package tsp.smartplugin.player;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONArray;
@@ -10,6 +11,7 @@ import tsp.smartplugin.player.info.NameHistory;
 import tsp.smartplugin.player.info.PlayerInfo;
 import tsp.smartplugin.player.info.SkinInfo;
 import tsp.smartplugin.server.ServerVersion;
+import tsp.smartplugin.utils.ChatUtils;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -27,6 +29,10 @@ public final class PlayerUtils {
 
     private PlayerUtils() {}
 
+    public static String colorize(String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
     public static void sendConfigMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function, @Nullable String... args) {
         String message = MessageUtils.getMessage(key);
         if (args != null) {
@@ -35,7 +41,7 @@ public final class PlayerUtils {
             }
         }
 
-        receiver.sendMessage(MessageUtils.colorize(function != null ? function.apply(message) : message));
+        receiver.sendMessage(ChatUtils.colorize(function != null ? function.apply(message) : message));
     }
 
     public static void sendConfigMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function) {
@@ -57,7 +63,7 @@ public final class PlayerUtils {
             }
         }
 
-        receiver.sendMessage(MessageUtils.colorize(function != null ? function.apply(message) : message));
+        receiver.sendMessage(ChatUtils.colorize(function != null ? function.apply(message) : message));
     }
 
     public static void sendMessage(CommandSender receiver, String message, @Nullable UnaryOperator<String> function) {

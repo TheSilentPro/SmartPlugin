@@ -74,6 +74,22 @@ public class PagedPane implements InventoryHolder {
         reRender();
     }
 
+    public void setButton(int i, Button button) {
+        for (Map.Entry<Integer, Page> entry : pages.entrySet()) {
+            if (entry.getValue().setButton(i, button)) {
+                if (entry.getKey() == currentIndex) {
+                    reRender();
+                }
+                return;
+            }
+        }
+        Page page = new Page(pageSize);
+        page.setButton(i, button);
+        pages.put(pages.lastKey() + 1, page);
+
+        reRender();
+    }
+
     /**
      * @param button The Button to remove
      */
@@ -185,6 +201,14 @@ public class PagedPane implements InventoryHolder {
     @Override
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public SortedMap<Integer, Page> getPages() {
+        return pages;
+    }
+
+    public Page getPage(int index) {
+        return pages.get(index);
     }
 
     /**

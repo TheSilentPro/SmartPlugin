@@ -1,6 +1,5 @@
 package tsp.smartplugin.player;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
@@ -17,10 +16,6 @@ public final class MessageUtils {
     private static String section = "messages";
 
     private MessageUtils() {}
-
-    public static String colorize(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
-    }
 
     public static String getMessage(String key) {
         return MESSAGES.get(key);

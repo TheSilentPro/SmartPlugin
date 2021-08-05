@@ -57,6 +57,20 @@ public class Page {
     }
 
     /**
+     * @param i Slot
+     * @param button The {@link Button} to add
+     * @return True if the button was added
+     */
+    public boolean setButton(int i, Button button) {
+        if (!hasSpace()) {
+            return false;
+        }
+        buttons.set(i, button);
+
+        return true;
+    }
+
+    /**
      * @param button The {@link Button} to remove
      *
      * @return True if the button was removed

@@ -37,6 +37,13 @@ public class Pane implements InventoryHolder {
         }
     }
 
+    public void setButton(int i, Button button) {
+        if (page.hasSpace()) {
+            page.setButton(i, button);
+            reRender();
+        }
+    }
+
     public void removeButton(Button button) {
         page.removeButton(button);
         reRender();
@@ -55,6 +62,10 @@ public class Pane implements InventoryHolder {
     @Override
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public Page getPage() {
+        return page;
     }
 
     /**
