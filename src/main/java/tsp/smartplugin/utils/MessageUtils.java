@@ -1,4 +1,4 @@
-package tsp.smartplugin.player;
+package tsp.smartplugin.utils;
 
 import org.bukkit.configuration.file.FileConfiguration;
 

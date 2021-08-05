@@ -1,6 +1,5 @@
 package tsp.smartplugin.builder;
 
-import com.destroystokyo.paper.profile.PlayerProfile;
 import com.google.common.collect.Multimap;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
@@ -9,13 +8,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
-import tsp.smartplugin.server.ServerUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class ItemBuilder {
     private boolean colorize = true;
 
     /**
-     * Creates a new ItemBuilder Object for the given {@link Material}
+     * Creates a new ItemBuilder for the given {@link Material}
      *
      * @param material The material used for creating the new Object
      */
@@ -48,7 +47,7 @@ public class ItemBuilder {
     }
 
     /**
-     * Creates a new ItemBuilder Object for the given {@link ItemStack}
+     * Creates a new ItemBuilder for the given {@link ItemStack}
      *
      * @param item The item used for creating the new Object
      */
@@ -60,7 +59,7 @@ public class ItemBuilder {
     }
 
     /**
-     * Creates a new ItemBuilder Object for the given {@link ItemStack} and {@link ItemMeta}
+     * Creates a new ItemBuilder for the given {@link ItemStack} and {@link ItemMeta}
      *
      * @param item The item used for creating the new Object
      * @param meta The ItemMeta used for creating the new Object
@@ -71,6 +70,18 @@ public class ItemBuilder {
 
         this.item = item;
         this.meta = meta;
+    }
+
+    /**
+     * Creates a new ItemBuilder for the given {@link Item}
+     *
+     * @param item The item used for creating the new Object
+     */
+    public ItemBuilder(@Nonnull Item item) {
+        Validate.notNull(item, "Item must not be null");
+
+        this.item = item.getItemStack();
+        this.meta = item.getItemStack().getItemMeta();
     }
 
     /**
@@ -206,7 +217,7 @@ public class ItemBuilder {
      *
      * @param index The line to remove
      */
-    public ItemBuilder removeLoreLine(int index) {
+    public ItemBuilder removeLore(int index) {
         if (index < 0 || lore == null) return this;
         lore.remove(index);
         meta.setLore(lore);
@@ -218,7 +229,7 @@ public class ItemBuilder {
      *
      * @param line The line to remove
      */
-    public ItemBuilder removeLoreLine(@Nonnull String line) {
+    public ItemBuilder removeLore(@Nonnull String line) {
         Validate.notNull(line, "line must not be null");
 
         if (!lore.contains(line)) return this;
@@ -332,20 +343,6 @@ public class ItemBuilder {
 
         if (meta instanceof SkullMeta) {
             ((SkullMeta) meta).setOwningPlayer(owner);
-        }
-        return this;
-    }
-
-    /**
-     * Set the owner as a {@link PlayerProfile}
-     *
-     * @param profile The owner profile
-     */
-    public ItemBuilder setOwner(@Nonnull PlayerProfile profile) {
-        Validate.notNull(profile, "Profile must not be null");
-
-        if (meta instanceof SkullMeta && ServerUtils.isPaper()) {
-            ((SkullMeta) meta).setPlayerProfile(profile);
         }
         return this;
     }

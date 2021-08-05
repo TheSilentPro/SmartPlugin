@@ -5,8 +5,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import tsp.smartplugin.inventory.paged.PagedPane;
 import tsp.smartplugin.inventory.single.Pane;
-
-import java.util.Arrays;
+import tsp.smartplugin.utils.NumberUtils;
 
 /**
  * Utility class for managing inventories
@@ -95,25 +94,13 @@ public final class InventoryUtils {
 
         // Fill
         for (int i = 0; i < size; i++) {
-            if (ignored != null && !contains(i, ignored)) {
+            if (ignored != null && !NumberUtils.contains(i, ignored)) {
                 ItemStack slotItem = inv.getItem(i);
                 if (slotItem == null || slotItem.getType() == Material.AIR) {
                     inv.setItem(i, item);
                 }
             }
         }
-    }
-
-    /**
-     * Checks if an array contains a number
-     * This is mainly for internal use
-     *
-     * @param n The number to check for
-     * @param array The array to check
-     * @return If the number was found in the array
-     */
-    public static boolean contains(int n, int... array) {
-        return Arrays.binarySearch(array, n) > -1;
     }
 
 }

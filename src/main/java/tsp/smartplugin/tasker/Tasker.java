@@ -14,7 +14,6 @@ import java.util.function.Consumer;
  *
  * @author TheSilentPro
  */
-
 public class Tasker {
 
     private final JavaPlugin plugin;

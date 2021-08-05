@@ -81,7 +81,7 @@ public final class Log {
         ERROR,
         DEBUG;
 
-        private ChatColor getColor() {
+        public ChatColor getColor() {
             switch (this) {
                 case INFO:
                     return ChatColor.GREEN;
