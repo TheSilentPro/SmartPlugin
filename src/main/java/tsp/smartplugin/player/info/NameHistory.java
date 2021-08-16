@@ -19,6 +19,10 @@ public class NameHistory {
         return new Date(timestamp);
     }
 
+    public long getTimestamp(String name) {
+        return history.get(name);
+    }
+
     public Map<String, Long> getHistory() {
         return history;
     }

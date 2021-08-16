@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class MessageUtils {
 
-    private static final Map<String, String> MESSAGES = new HashMap<>();
+    private static final Map<String, String> MESSAGES = new HashMap<>(); // key, message
     private static String section = "messages";
 
     private MessageUtils() {}
@@ -38,8 +38,9 @@ public final class MessageUtils {
     }
 
     public static void load(FileConfiguration messagesFile) {
+        section = section.isEmpty() ? section : section + ".";
         for (String key : messagesFile.getConfigurationSection(section).getKeys(false)) {
-            MESSAGES.put(key, messagesFile.getString(section + "." + key));
+            MESSAGES.put(key, messagesFile.getString(section + key));
         }
     }
 

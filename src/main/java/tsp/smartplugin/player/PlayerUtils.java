@@ -20,7 +20,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
@@ -79,6 +78,12 @@ public final class PlayerUtils {
         sendMessage(receiver, message, null, (String[]) null);
     }
 
+    public static void sendMessages(String message, CommandSender... receivers) {
+        for (CommandSender receiver : receivers) {
+            sendMessage(receiver, message);
+        }
+    }
+
     public static int getPing(Player player) {
         if (ServerVersion.getVersion().isHigherThanOrEquals(ServerVersion.v_1_17)) {
             return player.getPing();
@@ -112,29 +117,11 @@ public final class PlayerUtils {
         return getUniqueId(name, 5000);
     }
 
-    public static void getUniqueId(String name, Consumer<UUID> uniqueId, Consumer<IOException> ex, Consumer<ParseException> pex) {
-        try {
-            uniqueId.accept(getUniqueId(name));
-        } catch (IOException io) {
-            ex.accept(io);
-        } catch (ParseException parse) {
-            pex.accept(parse);
-        }
-    }
-
     public static UUID getUniqueIdNoException(String name) {
         try {
             return getUniqueId(name);
         } catch (IOException | ParseException ignored) {
             return null;
-        }
-    }
-
-    public void getUniqueId(String name, Consumer<UUID> uniqueId) {
-        try {
-            uniqueId.accept(getUniqueId(name));
-        } catch (IOException | ParseException ignored) {
-            return;
         }
     }
 

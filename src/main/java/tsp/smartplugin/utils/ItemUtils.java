@@ -44,24 +44,18 @@ public class ItemUtils {
 
         return ((l + time * 1000) - System.currentTimeMillis()) / 1000;
     }
-
-    public static void use(ItemStack item, Consumer<Boolean> ready, Consumer<Long> unready) {
-        long time = getTimeLeft(item);
-        if (time < 1) {
-            ready.accept(true);
-        } else {
-            unready.accept(time);
-        }
-    }
     
     public static void use(ItemStack item, long cooldown, Consumer<Boolean> ready, Consumer<Long> unready) {
-        long time = getTimeLeft(item);
-        if (time < 1) {
+        if (cooldown < 1) {
             ready.accept(true);
             addCooldown(item, cooldown);
         } else {
-            unready.accept(time);
+            unready.accept(cooldown);
         }
+    }
+
+    public static void use(ItemStack item, Consumer<Boolean> ready, Consumer<Long> unready) {
+        use(item, getTimeLeft(item), ready, unready);
     }
 
 }
