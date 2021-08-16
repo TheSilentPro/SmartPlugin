@@ -20,7 +20,7 @@ public class NumberUtils {
     }
 
     public static boolean contains(int i, int... array) {
-        return Arrays.binarySearch(array, i) < 0;
+        return Arrays.binarySearch(array, i) > -1;
     }
 
     /**
