@@ -1,7 +1,7 @@
 package tsp.smartplugin.server;
 
 import org.bukkit.Bukkit;
-import tsp.smartplugin.utils.ChatUtils;
+import tsp.smartplugin.utils.StringUtils;
 
 /**
  * Utility class for a Minecraft Server
@@ -13,7 +13,7 @@ public final class ServerUtils {
     private ServerUtils() {}
 
     public static void broadcast(String message) {
-        Bukkit.broadcastMessage(ChatUtils.colorize(message));
+        Bukkit.broadcastMessage(StringUtils.colorize(message));
     }
 
     public static ServerVersion getVersion() {

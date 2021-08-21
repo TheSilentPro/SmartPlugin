@@ -84,6 +84,10 @@ public final class PersistentDataAPI {
         setByte(holder, key, value ? ((byte) 1) : ((byte) 0));
     }
 
+    public static <T, Z> void set(PersistentDataHolder holder, NamespacedKey key, PersistentDataType<T, Z> type, Z value) {
+        holder.getPersistentDataContainer().set(key, type, value);
+    }
+
     public static void setJsonObject(PersistentDataHolder holder, NamespacedKey key, JsonObject value) {
         holder.getPersistentDataContainer().set(key, PersistentJsonDataType.JSON_OBJECT, value);
     }
@@ -272,6 +276,10 @@ public final class PersistentDataAPI {
         }
 
         return false;
+    }
+
+    public static <T, Z> boolean has(PersistentDataHolder holder, NamespacedKey key, PersistentDataType<T, Z> type) {
+        return holder.getPersistentDataContainer().has(key, type);
     }
 
     /**
@@ -789,6 +797,18 @@ public final class PersistentDataAPI {
      */
     public static long[] getLongArray(PersistentDataHolder holder, NamespacedKey key, long... defaultVal) {
         return holder.getPersistentDataContainer().getOrDefault(key, PersistentDataType.LONG_ARRAY, defaultVal);
+    }
+
+    public static <T, Z> Z get(PersistentDataHolder holder, NamespacedKey key, PersistentDataType<T, Z> type) {
+        return holder.getPersistentDataContainer().get(key, type);
+    }
+
+    public static <T, Z> Optional<Z> getOptional(PersistentDataHolder holder, NamespacedKey key, PersistentDataType<T, Z> type) {
+        return Optional.ofNullable(holder.getPersistentDataContainer().get(key, type));
+    }
+
+    public static <T, Z> Z getOrDefault(PersistentDataHolder holder, NamespacedKey key, PersistentDataType<T, Z> type, Z def) {
+        return holder.getPersistentDataContainer().getOrDefault(key, type, def);
     }
 
     /**

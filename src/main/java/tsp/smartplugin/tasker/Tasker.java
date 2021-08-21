@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Utility class for running a {@link Runnable} or {@link Consumer<BukkitTask>}
+ * Class for running a {@link Runnable} or {@link Consumer<BukkitTask>}
  *
  * @author TheSilentPro
  */

@@ -1,18 +1,17 @@
 package tsp.smartplugin.player;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import tsp.smartplugin.mojang.MojangAPI;
 import tsp.smartplugin.player.info.NameHistory;
 import tsp.smartplugin.player.info.PlayerInfo;
 import tsp.smartplugin.player.info.SkinInfo;
 import tsp.smartplugin.server.ServerVersion;
-import tsp.smartplugin.utils.ChatUtils;
-import tsp.smartplugin.utils.MessageUtils;
+import tsp.smartplugin.utils.StringUtils;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -33,29 +32,6 @@ public final class PlayerUtils {
         return ChatColor.translateAlternateColorCodes('&', string);
     }
 
-    public static void sendConfigMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function, @Nullable String... args) {
-        String message = MessageUtils.getMessage(key);
-        if (args != null) {
-            for (int i = 0; i < args.length; i++) {
-                message = message.replace("$arg" + i, args[i]);
-            }
-        }
-
-        receiver.sendMessage(ChatUtils.colorize(function != null ? function.apply(message) : message));
-    }
-
-    public static void sendConfigMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function) {
-        sendConfigMessage(receiver, key, function, (String[]) null);
-    }
-
-    public static void sendConfigMessage(CommandSender receiver, String key, @Nullable String... args) {
-        sendConfigMessage(receiver, key, null, args);
-    }
-
-    public static void sendConfigMessage(CommandSender receiver, String key) {
-        sendConfigMessage(receiver, key, null, (String[]) null);
-    }
-
     public static void sendMessage(CommandSender receiver, String message, @Nullable UnaryOperator<String> function, @Nullable String... args) {
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
@@ -63,7 +39,7 @@ public final class PlayerUtils {
             }
         }
 
-        receiver.sendMessage(ChatUtils.colorize(function != null ? function.apply(message) : message));
+        receiver.sendMessage(StringUtils.colorize(function != null ? function.apply(message) : message));
     }
 
     public static void sendMessage(CommandSender receiver, String message, @Nullable UnaryOperator<String> function) {
@@ -98,37 +74,37 @@ public final class PlayerUtils {
         }
     }
 
-    public static PlayerInfo getPlayerInfo(UUID uuid) throws IOException, ParseException {
+    public static PlayerInfo getPlayerInfo(UUID uuid) throws IOException {
         return new PlayerInfo(uuid, getSkinInfo(uuid), getNameHistory(uuid));
     }
 
-    public static PlayerInfo getPlayerInfo(String name) throws IOException, ParseException {
+    public static PlayerInfo getPlayerInfo(String name) throws IOException {
         UUID uuid = getUniqueId(name);
 
         return new PlayerInfo(uuid, getSkinInfo(uuid), getNameHistory(uuid));
     }
 
-    public static UUID getUniqueId(String name, int timeout) throws IOException, ParseException {
-        JSONObject obj = MojangAPI.getUniqueId(name, timeout);
+    public static UUID getUniqueId(String name, int timeout) throws IOException {
+        JsonObject obj = MojangAPI.getUniqueId(name, timeout);
         return UUID.fromString(obj.get("id").toString());
     }
 
-    public static UUID getUniqueId(String name) throws IOException, ParseException {
+    public static UUID getUniqueId(String name) throws IOException {
         return getUniqueId(name, 5000);
     }
 
     public static UUID getUniqueIdNoException(String name) {
         try {
             return getUniqueId(name);
-        } catch (IOException | ParseException ignored) {
+        } catch (IOException ignored) {
             return null;
         }
     }
 
-    public static SkinInfo getSkinInfo(UUID uuid, int timeout) throws IOException, ParseException {
-        JSONObject obj = MojangAPI.getSkinInfo(uuid, timeout);
-        JSONArray properties = (JSONArray) obj.get("properties");
-        JSONObject textures = (JSONObject) properties.get(0);
+    public static SkinInfo getSkinInfo(UUID uuid, int timeout) throws IOException {
+        JsonObject obj = MojangAPI.getSkinInfo(uuid, timeout);
+        JsonArray properties = obj.get("properties").getAsJsonArray();
+        JsonObject textures = properties.get(0).getAsJsonObject();
         
         String id = obj.get("id").toString();
         String name = obj.get("name").toString();
@@ -137,24 +113,24 @@ public final class PlayerUtils {
         return new SkinInfo(id, name, value, signature);
     }
 
-    public static SkinInfo getSkinInfo(UUID uuid) throws IOException, ParseException {
+    public static SkinInfo getSkinInfo(UUID uuid) throws IOException {
         return getSkinInfo(uuid, 5000);
     }
 
-    public static NameHistory getNameHistory(UUID uuid, int timeout) throws IOException, ParseException {
-        JSONArray array = MojangAPI.getNameHistory(uuid, timeout);
+    public static NameHistory getNameHistory(UUID uuid, int timeout) throws IOException {
+        JsonArray array = MojangAPI.getNameHistory(uuid, timeout);
         Map<String, Long> history = new HashMap<>();
-        for (Object o : array) {
-            JSONObject obj = (JSONObject) o;
+        for (JsonElement e : array) {
+            JsonObject obj = e.getAsJsonObject();
             String name = obj.get("name").toString();
-            long timestamp = obj.get("changedToAt") != null ? (long) obj.get("changedToAt") : -1;
+            long timestamp = obj.get("changedToAt") != null ? obj.get("changedToAt").getAsLong() : -1;
             history.put(name, timestamp);
         }
 
         return new NameHistory(uuid, history);
     }
 
-    public static NameHistory getNameHistory(UUID uuid) throws IOException, ParseException {
+    public static NameHistory getNameHistory(UUID uuid) throws IOException {
         return getNameHistory(uuid, 5000);
     }
 

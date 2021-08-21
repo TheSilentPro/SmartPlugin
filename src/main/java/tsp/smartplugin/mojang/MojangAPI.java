@@ -1,9 +1,8 @@
 package tsp.smartplugin.mojang;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import tsp.smartplugin.SmartPlugin;
 
 import java.io.BufferedReader;
@@ -25,7 +24,7 @@ public final class MojangAPI {
 
     private MojangAPI() {}
 
-    public static JSONObject getUniqueId(String name, int timeout) throws IOException, ParseException {
+    public static JsonObject getUniqueId(String name, int timeout) throws IOException {
         String req = "https://api.mojang.com/users/profiles/minecraft/" + name;
         String line;
         StringBuilder response = new StringBuilder();
@@ -37,11 +36,11 @@ public final class MojangAPI {
             response.append(line);
         }
 
-        JSONParser parser = new JSONParser();
-        return (JSONObject) parser.parse(response.toString());
+        JsonParser parser = new JsonParser();
+        return (JsonObject) parser.parse(response.toString());
     }
 
-    public static JSONObject getSkinInfo(UUID uuid, int timeout) throws IOException, ParseException {
+    public static JsonObject getSkinInfo(UUID uuid, int timeout) throws IOException {
         String req = "https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", "") + "?unsigned=false";
         String line;
         StringBuilder response = new StringBuilder();
@@ -53,15 +52,15 @@ public final class MojangAPI {
             response.append(line);
         }
 
-        JSONParser parser = new JSONParser();
-        return (JSONObject) parser.parse(response.toString());
+        JsonParser parser = new JsonParser();
+        return (JsonObject) parser.parse(response.toString());
     }
 
-    public static JSONObject getSkinInfo(UUID uuid) throws IOException, ParseException {
+    public static JsonObject getSkinInfo(UUID uuid) throws IOException {
         return getSkinInfo(uuid, 5000);
     }
 
-    public static JSONArray getNameHistory(UUID uuid, int timeout) throws IOException, ParseException {
+    public static JsonArray getNameHistory(UUID uuid, int timeout) throws IOException {
         String req = "https://api.mojang.com/user/profiles/" + uuid.toString().replace("-", "") + "/names";
         String line;
         StringBuilder response = new StringBuilder();
@@ -73,10 +72,10 @@ public final class MojangAPI {
             response.append(line);
         }
 
-        return (JSONArray) new JSONParser().parse(response.toString());
+        return (JsonArray) new JsonParser().parse(response.toString());
     }
 
-    public static JSONArray getNameHistory(UUID uuid) throws IOException, ParseException {
+    public static JsonArray getNameHistory(UUID uuid) throws IOException {
         return getNameHistory(uuid, 5000);
     }
 
@@ -99,7 +98,7 @@ public final class MojangAPI {
         return getBlockedServers(5000);
     }
 
-    public static JSONArray getServiceStatus(int timeout) throws IOException, ParseException {
+    public static JsonArray getServiceStatus(int timeout) throws IOException {
         String req = "https://status.mojang.com/check";
         String line;
         StringBuilder response = new StringBuilder();
@@ -111,10 +110,10 @@ public final class MojangAPI {
             response.append(line);
         }
 
-        return (JSONArray) new JSONParser().parse(response.toString());
+        return (JsonArray) new JsonParser().parse(response.toString());
     }
 
-    public static JSONArray getServiceStatus() throws IOException, ParseException {
+    public static JsonArray getServiceStatus() throws IOException {
         return getServiceStatus(50000);
     }
 
