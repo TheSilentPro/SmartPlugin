@@ -3,6 +3,7 @@ package tsp.smartplugin.tasker;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
+import tsp.smartplugin.SmartPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,11 @@ public class Tasker {
 
     private final JavaPlugin plugin;
     private final BukkitScheduler scheduler;
+
+    public Tasker() {
+        this.plugin = SmartPlugin.getInstance().getPlugin();
+        this.scheduler = plugin.getServer().getScheduler();
+    }
 
     public Tasker(JavaPlugin plugin) {
         this.plugin = plugin;

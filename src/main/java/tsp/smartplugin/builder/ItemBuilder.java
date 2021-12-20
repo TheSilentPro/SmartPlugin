@@ -127,9 +127,9 @@ public class ItemBuilder {
     public ItemBuilder addEnchantments(@Nonnull Map<Enchantment, Integer> enchantments) {
         Validate.notNull(enchantments, "Enchantments must not be null");
 
-        enchantments.forEach(
-                (e, l) -> meta.addEnchant(e, l, false)
-        );
+        for (Map.Entry<Enchantment, Integer> enchantment : enchantments.entrySet()) {
+            meta.addEnchant(enchantment.getKey(), enchantment.getValue(), false);
+        }
         return this;
     }
 
@@ -157,9 +157,10 @@ public class ItemBuilder {
     public ItemBuilder addUnsafeEnchantments(@Nonnull Map<Enchantment, Integer> enchantments) {
         Validate.notNull(enchantments, "Enchantments must not be null");
 
-        enchantments.forEach(
-                (e, l) -> meta.addEnchant(e, l, true)
-        );
+
+        for (Map.Entry<Enchantment, Integer> enchantment : enchantments.entrySet()) {
+            meta.addEnchant(enchantment.getKey(), enchantment.getValue(), true);
+        }
         return this;
     }
 
@@ -400,9 +401,9 @@ public class ItemBuilder {
         if (!colorize) return string;
 
         List<String> result = new ArrayList<>();
-        string.forEach(
-                (str) -> result.add(colorize(str))
-        );
+        for (String str : string) {
+            result.add(str);
+        }
         return result;
     }
 

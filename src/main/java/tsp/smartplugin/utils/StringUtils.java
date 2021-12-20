@@ -13,11 +13,11 @@ public class StringUtils {
     }
 
     public static String joinArgs(int start, String[] args) {
-        return joinArgs(start, 0, args);
+        return joinArgs(start, args.length, args);
     }
 
     public static String joinArgs(String[] args) {
-        return joinArgs(0, args);
+        return joinArgs(0, args.length, args);
     }
 
     public static List<String> colorize(List<String> list) {

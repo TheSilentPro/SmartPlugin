@@ -17,7 +17,7 @@ public class Localization {
 
     private final Map<String, String> MESSAGES = new HashMap<>(); // key, message
     private String section = "messages";
-    private String argumentPlaceholder = "$arg";
+    private String argumentPlaceholder = "{%n}"; // %n will be replaced with the argument number
 
     public void setSection(String configSection) {
         section = configSection;
@@ -47,6 +47,12 @@ public class Localization {
         MESSAGES.clear();
     }
 
+    /**
+     * Loads the messages in memory cache
+     *
+     * @param messagesFile The file containing the messages
+     * @param deep If all sub-paths should be included
+     */
     public void load(FileConfiguration messagesFile, boolean deep) {
         section = section.isEmpty() ? section : section + ".";
         for (String key : messagesFile.getConfigurationSection(section).getKeys(deep)) {
@@ -75,7 +81,7 @@ public class Localization {
         String message = getMessage(key);
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
-                message = message.replace(argumentPlaceholder + i, args[i]);
+                message = message.replace(argumentPlaceholder.replace("%n", String.valueOf(i)), args[i]);
             }
         }
 

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 /**
  * Class for fetching non-authenticated info from Mojang
- * Responses are formatted in JSON using json-simple
+ * Responses are formatted in JSON
  *
  * @author TheSilentPro
  */

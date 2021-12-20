@@ -7,8 +7,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class LocationUtils {
+public class SerializationUtils {
 
+    // Location
     public static void serializeLocation(Location location, FileConfiguration data, @Nullable String key) {
         if (key != null && !key.isEmpty()) {
             key = key + ".";

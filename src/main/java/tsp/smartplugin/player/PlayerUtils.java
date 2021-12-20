@@ -28,10 +28,6 @@ public final class PlayerUtils {
 
     private PlayerUtils() {}
 
-    public static String colorize(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
-    }
-
     public static void sendMessage(CommandSender receiver, String message, @Nullable UnaryOperator<String> function, @Nullable String... args) {
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
@@ -61,7 +57,7 @@ public final class PlayerUtils {
     }
 
     public static int getPing(Player player) {
-        if (ServerVersion.getVersion().isHigherThanOrEquals(ServerVersion.v_1_17)) {
+        if (ServerVersion.getVersion().isNewerThanOrEquals(ServerVersion.v_1_17)) {
             return player.getPing();
         }
 
