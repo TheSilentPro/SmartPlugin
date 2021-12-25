@@ -4,14 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public class SerializationUtils {
 
     // Location
-    public static void serializeLocation(Location location, FileConfiguration data, @Nullable String key) {
-        if (key != null && !key.isEmpty()) {
+    public static void serializeLocation(Location location, FileConfiguration data, @Nonnull String key) {
+        if (!key.isEmpty()) {
             key = key + ".";
         }
 
@@ -30,8 +30,8 @@ public class SerializationUtils {
         data.set(key + "pitch", pitch);
     }
 
-    public static Location deserializeLocation(FileConfiguration data, @Nullable String key) {
-        if (key != null && !key.isEmpty()) {
+    public static Location deserializeLocation(FileConfiguration data, @Nonnull String key) {
+        if (!key.isEmpty()) {
             key = key + ".";
         }
 
