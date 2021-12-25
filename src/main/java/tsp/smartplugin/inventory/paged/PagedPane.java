@@ -22,7 +22,10 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
- * A paged pane. Credits @ I Al Ianstaan
+ * A paged pane.
+ *
+ * @author I Al Ianstaan
+ * @author TheSilentPro
  */
 public class PagedPane implements InventoryHolder {
 
@@ -31,6 +34,10 @@ public class PagedPane implements InventoryHolder {
     private final SortedMap<Integer, Page> pages = new TreeMap<>();
     private int currentIndex;
     private final int pageSize;
+    private ItemStack borderItem;
+    private ItemStack backItem;
+    private ItemStack nextItem;
+    private ItemStack currentItem;
 
     @SuppressWarnings("WeakerAccess")
     protected Button controlBack;
@@ -48,6 +55,11 @@ public class PagedPane implements InventoryHolder {
         if (pageSize > 6) {
             throw new IllegalArgumentException("Page size must be <= 6, got" + pageSize);
         }
+
+        this.borderItem = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        this.backItem = new ItemStack(Material.COAL_BLOCK);
+        this.nextItem = new ItemStack(Material.IRON_BLOCK);
+        this.currentItem = new ItemStack(Material.BOOK);
 
         this.pageSize = pageSize;
         inventory = Bukkit.createInventory(this, rows * 9, color(title));
@@ -221,7 +233,7 @@ public class PagedPane implements InventoryHolder {
         // create separator
         fillRow(
                 inventory.getSize() / 9 - 2,
-                getItemStack(Material.BLACK_STAINED_GLASS_PANE, " "),
+                borderItem,
                 inventory
         );
 
@@ -236,7 +248,7 @@ public class PagedPane implements InventoryHolder {
                     "&7Brings you back to the page &c%d",
                     getCurrentPage() - 1
             );
-            ItemStack itemStack = getItemStack(Material.COAL_BLOCK, name, lore);
+            ItemStack itemStack = getItemStack(backItem, name, lore);
             controlBack = new Button(itemStack, event -> selectPage(currentIndex - 1));
             inventory.setItem(inventory.getSize() - 8, itemStack);
         }
@@ -252,7 +264,7 @@ public class PagedPane implements InventoryHolder {
                     "&7Brings you to the page &c%d",
                     getCurrentPage() + 1
             );
-            ItemStack itemStack = getItemStack(Material.IRON_BLOCK, name, lore);
+            ItemStack itemStack = getItemStack(nextItem, name, lore);
             controlNext = new Button(itemStack, event -> selectPage(getCurrentPage()));
             inventory.setItem(inventory.getSize() - 2, itemStack);
         }
@@ -268,7 +280,7 @@ public class PagedPane implements InventoryHolder {
                     "&7You are on page &a%d &7/ &c%d",
                     getCurrentPage(), getPageAmount()
             );
-            ItemStack itemStack = getItemStack(Material.BOOK, name, lore);
+            ItemStack itemStack = getItemStack(currentItem, name, lore);
             inventory.setItem(inventory.getSize() - 5, itemStack);
         }
     }
@@ -282,17 +294,15 @@ public class PagedPane implements InventoryHolder {
     }
 
     /**
-     * @param type The {@link Material} of the {@link ItemStack}
+     * @param item The item.
      * @param name The name. May be null.
      * @param lore The lore. May be null.
      *
      * @return The item
      */
     @SuppressWarnings("WeakerAccess")
-    protected ItemStack getItemStack(Material type, String name, String... lore) {
-        ItemStack itemStack = new ItemStack(type);
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
+    protected ItemStack getItemStack(ItemStack item, String name, String... lore) {
+        ItemMeta itemMeta = item.getItemMeta();
 
         if (name != null) {
             itemMeta.setDisplayName(color(name));
@@ -300,9 +310,9 @@ public class PagedPane implements InventoryHolder {
         if (lore != null && lore.length != 0) {
             itemMeta.setLore(Arrays.stream(lore).map(this::color).collect(Collectors.toList()));
         }
-        itemStack.setItemMeta(itemMeta);
+        item.setItemMeta(itemMeta);
 
-        return itemStack;
+        return item;
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -316,6 +326,38 @@ public class PagedPane implements InventoryHolder {
     public void open(Player player) {
         reRender();
         player.openInventory(getInventory());
+    }
+
+    public void setBorderItem(ItemStack borderItem) {
+        this.borderItem = borderItem;
+    }
+
+    public void setCurrentItem(ItemStack currentItem) {
+        this.currentItem = currentItem;
+    }
+
+    public void setBackItem(ItemStack backItem) {
+        this.backItem = backItem;
+    }
+
+    public void setNextItem(ItemStack nextItem) {
+        this.nextItem = nextItem;
+    }
+
+    public ItemStack getBorderItem() {
+        return borderItem;
+    }
+
+    public ItemStack getCurrentItem() {
+        return currentItem;
+    }
+
+    public ItemStack getBackItem() {
+        return backItem;
+    }
+
+    public ItemStack getNextItem() {
+        return nextItem;
     }
 
 }
