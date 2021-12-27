@@ -77,7 +77,7 @@ public class Localization {
      * @param function Optional function to apply to the message
      * @param args Optional arguments to replace the {@link Localization#argumentPlaceholder} in the message with
      */
-    public void sendConfigMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function, @Nullable String... args) {
+    public void sendMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function, @Nullable String... args) {
         String message = getMessage(key);
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
@@ -88,16 +88,16 @@ public class Localization {
         receiver.sendMessage(StringUtils.colorize(function != null ? function.apply(message) : message));
     }
 
-    public void sendConfigMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function) {
-        sendConfigMessage(receiver, key, function, (String[]) null);
+    public void sendMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function) {
+        sendMessage(receiver, key, function, (String[]) null);
     }
 
-    public void sendConfigMessage(CommandSender receiver, String key, @Nullable String... args) {
-        sendConfigMessage(receiver, key, null, args);
+    public void sendMessage(CommandSender receiver, String key, @Nullable String... args) {
+        sendMessage(receiver, key, null, args);
     }
 
-    public void sendConfigMessage(CommandSender receiver, String key) {
-        sendConfigMessage(receiver, key, null, (String[]) null);
+    public void sendMessage(CommandSender receiver, String key) {
+        sendMessage(receiver, key, null, (String[]) null);
     }
 
 }
