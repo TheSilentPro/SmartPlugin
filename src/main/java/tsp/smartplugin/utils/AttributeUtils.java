@@ -8,7 +8,14 @@ import org.bukkit.attribute.AttributeModifier;
 import javax.annotation.Nonnull;
 import java.util.Map;
 
-public class AttributeUtils {
+public final class AttributeUtils {
+
+    /**
+     * Cached values of {@link Attribute}
+     */
+    public static final Attribute[] ATTRIBUTES = Attribute.values();
+
+    private AttributeUtils() {}
 
     /**
      * Checks if the {@link Attributable} has the specified {@link AttributeModifier}

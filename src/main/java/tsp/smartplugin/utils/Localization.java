@@ -16,8 +16,18 @@ import java.util.function.UnaryOperator;
 public class Localization {
 
     private final Map<String, String> MESSAGES = new HashMap<>(); // key, message
-    private String section = "messages";
-    private String argumentPlaceholder = "{%n}"; // %n will be replaced with the argument number
+    private String section;
+    private String argumentPlaceholder; // %n will be replaced with the argument number
+
+    public Localization(String section, String placeholder) {
+        this.section = section;
+        this.argumentPlaceholder = placeholder;
+    }
+
+    public Localization() {
+        this.section = "messages";
+        this.argumentPlaceholder = "{%n}";
+    }
 
     public void setSection(String configSection) {
         section = configSection;

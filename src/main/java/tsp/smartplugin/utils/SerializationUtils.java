@@ -7,7 +7,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-public class SerializationUtils {
+public final class SerializationUtils {
+
+    private SerializationUtils() {}
 
     // Location
     public static void serializeLocation(Location location, FileConfiguration data, @Nonnull String key) {

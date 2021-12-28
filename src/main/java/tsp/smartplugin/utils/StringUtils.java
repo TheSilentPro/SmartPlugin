@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class StringUtils {
+public final class StringUtils {
+
+    private StringUtils() {}
 
     public static String joinArgs(int start, int end, String[] args) {
         return String.join(" ", Arrays.copyOfRange(args, start, end));

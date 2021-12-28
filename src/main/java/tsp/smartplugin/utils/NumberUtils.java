@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
-public class NumberUtils {
+public final class NumberUtils {
+
+    private NumberUtils() {}
 
     public static void chance(int chance, Consumer<Integer> pass, Consumer<Integer> fail) {
         chance(chance, 100, pass, fail);
