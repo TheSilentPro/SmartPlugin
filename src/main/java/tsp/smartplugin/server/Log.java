@@ -39,6 +39,12 @@ public final class Log {
         log(LogLevel.DEBUG, message);
     }
 
+    /**
+     * Log a message to the console
+     *
+     * @param level The logging level of the message
+     * @param message The message
+     */
     public static void log(LogLevel level, String message) {
         if (level == LogLevel.DEBUG && !debug) {
             return;
@@ -46,6 +52,11 @@ public final class Log {
         Bukkit.getConsoleSender().sendMessage(StringUtils.colorize("&7[&9&l" + name + "&7] " + level.getColor() + "[" + level.name() + "]: " + message));
     }
 
+    /**
+     * Log a {@link Throwable} to the console
+     *
+     * @param ex The throwable to log
+     */
     public static void log(Throwable ex) {
         Bukkit.getConsoleSender().sendMessage(StringUtils.colorize("&7[" + name + "&7] " + "&4&l[EXCEPTION]: " + ex.getMessage()));
         Bukkit.getConsoleSender().sendMessage(StringUtils.colorize("&4&l[StackTrace]: " + getStackTrace(ex)));
@@ -81,6 +92,11 @@ public final class Log {
         ERROR,
         DEBUG;
 
+        /**
+         * Get the text color of the level
+         *
+         * @return The color
+         */
         public ChatColor getColor() {
             switch (this) {
                 case INFO:

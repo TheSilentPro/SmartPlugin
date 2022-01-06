@@ -16,7 +16,7 @@ import java.util.UUID;
 
 /**
  * Class for fetching non-authenticated info from Mojang
- * Responses are formatted in JSON
+ * Responses are formatted in JSON. https://wiki.vg/Mojang_API
  *
  * @author TheSilentPro
  */
@@ -36,8 +36,7 @@ public final class MojangAPI {
             response.append(line);
         }
 
-        JsonParser parser = new JsonParser();
-        return (JsonObject) parser.parse(response.toString());
+        return JsonParser.parseString(response.toString()).getAsJsonObject();
     }
 
     public static JsonObject getSkinInfo(UUID uuid, int timeout) throws IOException {
@@ -52,8 +51,7 @@ public final class MojangAPI {
             response.append(line);
         }
 
-        JsonParser parser = new JsonParser();
-        return (JsonObject) parser.parse(response.toString());
+        return JsonParser.parseString(response.toString()).getAsJsonObject();
     }
 
     public static JsonObject getSkinInfo(UUID uuid) throws IOException {
@@ -72,7 +70,7 @@ public final class MojangAPI {
             response.append(line);
         }
 
-        return (JsonArray) new JsonParser().parse(response.toString());
+        return JsonParser.parseString(response.toString()).getAsJsonArray();
     }
 
     public static JsonArray getNameHistory(UUID uuid) throws IOException {
@@ -110,7 +108,7 @@ public final class MojangAPI {
             response.append(line);
         }
 
-        return (JsonArray) new JsonParser().parse(response.toString());
+        return JsonParser.parseString(response.toString()).getAsJsonArray();
     }
 
     public static JsonArray getServiceStatus() throws IOException {

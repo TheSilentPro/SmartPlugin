@@ -28,10 +28,18 @@ public final class PlayerUtils {
 
     private PlayerUtils() {}
 
+    /**
+     * Send a message to a {@link CommandSender} or {@link Player}
+     *
+     * @param receiver The reciever of the message
+     * @param message The message to send
+     * @param function Optional: Function to apply to the message
+     * @param args Optional: Arguments for replacing. Format: {$argX} where X can be any argument number starting from 0.
+     */
     public static void sendMessage(CommandSender receiver, String message, @Nullable UnaryOperator<String> function, @Nullable String... args) {
         if (args != null) {
             for (int i = 0; i < args.length; i++) {
-                message = message.replace("$arg" + i, args[i]);
+                message = message.replace("{$arg" + i + "}", args[i]);
             }
         }
 
@@ -56,6 +64,12 @@ public final class PlayerUtils {
         }
     }
 
+    /**
+     * Retrieve the ping of the {@link Player}
+     *
+     * @param player The player to check
+     * @return The players ping. Returns -1 if an error occurs
+     */
     public static int getPing(Player player) {
         if (ServerVersion.getVersion().isNewerThanOrEquals(ServerVersion.v_1_17)) {
             return player.getPing();
@@ -70,6 +84,13 @@ public final class PlayerUtils {
         }
     }
 
+    /**
+     * Retrieve information about a {@link UUID} from Mojang
+     *
+     * @param uuid The uuid to check
+     * @return Player Information
+     * @throws IOException Error
+     */
     public static PlayerInfo getPlayerInfo(UUID uuid) throws IOException {
         return new PlayerInfo(uuid, getSkinInfo(uuid), getNameHistory(uuid));
     }
@@ -80,6 +101,14 @@ public final class PlayerUtils {
         return new PlayerInfo(uuid, getSkinInfo(uuid), getNameHistory(uuid));
     }
 
+    /**
+     * Retrieve the unique id of a player based on their name
+     *
+     * @param name The player name
+     * @param timeout Connection timeout
+     * @return The unique id
+     * @throws IOException Error
+     */
     public static UUID getUniqueId(String name, int timeout) throws IOException {
         JsonObject obj = MojangAPI.getUniqueId(name, timeout);
         return UUID.fromString(obj.get("id").toString());
@@ -89,6 +118,13 @@ public final class PlayerUtils {
         return getUniqueId(name, 5000);
     }
 
+    /**
+     * Retrieve the unique id of a player based on their name
+     *
+     * @param name The player name
+     * @return The unique id. Returns null if an error occurs
+     */
+    @Nullable
     public static UUID getUniqueIdNoException(String name) {
         try {
             return getUniqueId(name);
@@ -97,6 +133,14 @@ public final class PlayerUtils {
         }
     }
 
+    /**
+     * Retrieve skin information about a {@link UUID}
+     *
+     * @param uuid The unique id to check
+     * @param timeout Connection timeout
+     * @return Skin information
+     * @throws IOException Error
+     */
     public static SkinInfo getSkinInfo(UUID uuid, int timeout) throws IOException {
         JsonObject obj = MojangAPI.getSkinInfo(uuid, timeout);
         JsonArray properties = obj.get("properties").getAsJsonArray();
@@ -113,6 +157,14 @@ public final class PlayerUtils {
         return getSkinInfo(uuid, 5000);
     }
 
+    /**
+     * Retrieve name history of a {@link UUID}
+     *
+     * @param uuid The unique id
+     * @param timeout Connection timeout
+     * @return Name History
+     * @throws IOException Error
+     */
     public static NameHistory getNameHistory(UUID uuid, int timeout) throws IOException {
         JsonArray array = MojangAPI.getNameHistory(uuid, timeout);
         Map<String, Long> history = new HashMap<>();

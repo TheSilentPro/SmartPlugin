@@ -1,6 +1,5 @@
 package tsp.smartplugin.utils;
 
-import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
@@ -8,10 +7,14 @@ public final class NumberUtils {
 
     private NumberUtils() {}
 
-    public static void chance(int chance, Consumer<Integer> pass, Consumer<Integer> fail) {
-        chance(chance, 100, pass, fail);
-    }
-
+    /**
+     * Chance to do something
+     *
+     * @param chance The chance
+     * @param max Max number
+     * @param pass Ran upon passing
+     * @param fail Ran upon failing
+     */
     public static void chance(int chance, int max, Consumer<Integer> pass, Consumer<Integer> fail) {
         int picked = ThreadLocalRandom.current().nextInt(max);
         if (chance <= picked) {
@@ -21,8 +24,8 @@ public final class NumberUtils {
         }
     }
 
-    public static boolean contains(int i, int... array) {
-        return Arrays.binarySearch(array, i) > -1;
+    public static void chance(int chance, Consumer<Integer> pass, Consumer<Integer> fail) {
+        chance(chance, 100, pass, fail);
     }
 
     /**

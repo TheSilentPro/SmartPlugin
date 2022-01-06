@@ -7,6 +7,8 @@ import tsp.smartplugin.inventory.paged.PagedPane;
 import tsp.smartplugin.inventory.single.Pane;
 import tsp.smartplugin.utils.NumberUtils;
 
+import java.util.Arrays;
+
 /**
  * Utility class for managing inventories
  *
@@ -94,7 +96,7 @@ public final class InventoryUtils {
 
         // Fill
         for (int i = 0; i < size; i++) {
-            if (ignored != null && !NumberUtils.contains(i, ignored)) {
+            if (ignored != null && (Arrays.binarySearch(ignored, i) > -1)) {
                 ItemStack slotItem = inv.getItem(i);
                 if (slotItem == null || slotItem.getType() == Material.AIR) {
                     inv.setItem(i, item);
