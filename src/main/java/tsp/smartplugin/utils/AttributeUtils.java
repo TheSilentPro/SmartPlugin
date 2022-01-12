@@ -8,6 +8,11 @@ import org.bukkit.attribute.AttributeModifier;
 import javax.annotation.Nonnull;
 import java.util.Map;
 
+/**
+ * Utility class for handling {@link Attribute}'s
+ *
+ * @author TheSilentPro
+ */
 public final class AttributeUtils {
 
     /**

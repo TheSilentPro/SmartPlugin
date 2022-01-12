@@ -1,11 +1,8 @@
-package tsp.smartplugin.inventory;
+package tsp.smartplugin.utils;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import tsp.smartplugin.inventory.paged.PagedPane;
-import tsp.smartplugin.inventory.single.Pane;
-import tsp.smartplugin.utils.NumberUtils;
 
 import java.util.Arrays;
 
@@ -17,29 +14,6 @@ import java.util.Arrays;
 public final class InventoryUtils {
 
     private InventoryUtils() {}
-
-    /**
-     * Creates a {@link PagedPane}
-     *
-     * @param size The size of the pane (0 - 6)
-     * @param rows The number of rows (0 - 6)
-     * @param title The title of the pane
-     * @return The PagedPane
-     */
-    public static PagedPane createPagedPane(int size, int rows, String title) {
-        return new PagedPane(size, rows, title);
-    }
-
-    /**
-     * Creates a {@link Pane}
-     *
-     * @param rows The number of rows (0 - 6)
-     * @param title The title of the pane
-     * @return The Pane
-     */
-    public static Pane createPane(int rows, String title) {
-        return new Pane(rows, title);
-    }
 
     /**
      * Fills the borders of an {@link Inventory}
@@ -87,16 +61,17 @@ public final class InventoryUtils {
     /**
      * Fills the empty slots of an {@link Inventory}
      *
-     * @param inv The target tsp.smartaddon.inventory
+     * @param inv The inventory to fill
      * @param item The item used for filling
-     * @param ignored Ignored slots
+     * @param ignored Ignored slots. Must be ordered lowest -> highest
      */
-    public static void fill(Inventory inv, ItemStack item, int... ignored) {
+    public static void binaryFill(Inventory inv, ItemStack item, int... ignored) {
         int size = inv.getSize();
 
         // Fill
         for (int i = 0; i < size; i++) {
-            if (ignored != null && (Arrays.binarySearch(ignored, i) > -1)) {
+            // If slot is not ignored
+            if (ignored != null && Arrays.binarySearch(ignored, i) < 0) {
                 ItemStack slotItem = inv.getItem(i);
                 if (slotItem == null || slotItem.getType() == Material.AIR) {
                     inv.setItem(i, item);

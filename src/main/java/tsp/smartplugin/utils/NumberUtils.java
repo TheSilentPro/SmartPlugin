@@ -3,6 +3,11 @@ package tsp.smartplugin.utils;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
+/**
+ * Utility class for numbers
+ *
+ * @author TheSilentPro
+ */
 public final class NumberUtils {
 
     private NumberUtils() {}

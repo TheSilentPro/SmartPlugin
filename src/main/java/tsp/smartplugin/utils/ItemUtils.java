@@ -8,6 +8,11 @@ import tsp.smartplugin.data.PersistentDataAPI;
 
 import java.util.function.Consumer;
 
+/**
+ * Utility class for an {@link ItemStack}
+ *
+ * @author TheSilentPro
+ */
 public final class ItemUtils {
 
     public static final NamespacedKey COOLDOWN_KEY = new NamespacedKey(SmartPlugin.getInstance().getPlugin(), "item_cooldown");

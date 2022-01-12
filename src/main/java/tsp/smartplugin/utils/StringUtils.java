@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for managing {@link String}'s
@@ -59,6 +60,63 @@ public final class StringUtils {
      */
     public static String colorize(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    /**
+     * Colorize a string as gradient
+     *
+     * @param string The string to colorize
+     * @param colors The colors used for gradient
+     * @return String in gradient colors
+     */
+    public static String gradient(String string, ChatColor... colors) {
+        StringBuilder builder = new StringBuilder();
+        int color = 0;
+        for (char c : string.toCharArray()) {
+            builder.append(colors[color]).append(c);
+
+            color = (color + 1 < colors.length) ? color + 1 : 0;
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Colorize a string as gradient with the specified delimiter.
+     * Notice: This uses {@link String#split(String)} which compiles a pattern each time it is used!
+     *
+     * @param string The string to colorize
+     * @param colors The colors used for gradient
+     * @return String in gradient colors
+     * @see #gradientWord(String, Pattern, ChatColor...)
+     */
+    public static String gradientWord(String string, String delimiter, ChatColor... colors) {
+        String[] args = string.split(delimiter);
+        StringBuilder builder = new StringBuilder();
+        int color = 0;
+        for (String arg : args) {
+            builder.append(colors[color]).append(arg);
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Colorize a string as gradient with the specified delimiter.
+     *
+     * @param string The string to colorize
+     * @param colors The colors used for gradient
+     * @return String in gradient colors
+     */
+    public static String gradientWord(String string, Pattern delimiter, ChatColor... colors) {
+        String[] args = delimiter.split(string);
+        StringBuilder builder = new StringBuilder();
+        int color = 0;
+        for (String arg : args) {
+            builder.append(colors[color]).append(arg);
+        }
+
+        return builder.toString();
     }
 
 }

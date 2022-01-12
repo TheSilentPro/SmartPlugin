@@ -1,6 +1,7 @@
 package tsp.smartplugin.handler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import tsp.smartplugin.SmartPlugin;
@@ -8,7 +9,7 @@ import tsp.smartplugin.SmartPlugin;
 /**
  * @see Listener
  */
-public abstract class Handler implements Listener {
+public abstract class Handler<E extends Event> implements Listener {
 
     public Handler(JavaPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -17,5 +18,7 @@ public abstract class Handler implements Listener {
     public Handler() {
         Bukkit.getPluginManager().registerEvents(this, SmartPlugin.getInstance().getPlugin());
     }
+
+    public abstract void handle(E event);
 
 }
