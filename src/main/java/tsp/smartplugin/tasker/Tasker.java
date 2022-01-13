@@ -21,7 +21,7 @@ public class Tasker {
     private final BukkitScheduler scheduler;
 
     public Tasker() {
-        this.plugin = SmartPlugin.getInstance().getPlugin();
+        this.plugin = SmartPlugin.getInstance();
         this.scheduler = plugin.getServer().getScheduler();
     }
 

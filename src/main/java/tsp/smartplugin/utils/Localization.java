@@ -41,7 +41,7 @@ public class Localization {
      * Constructs a new {@link Localization} instance with the default parameters
      */
     public Localization() {
-        this.messageFile = new File(SmartPlugin.getInstance().getPlugin().getDataFolder(), "messages.yml");
+        this.messageFile = new File(SmartPlugin.getInstance().getDataFolder(), "messages.yml");
         this.data = YamlConfiguration.loadConfiguration(messageFile);
         this.section = "messages";
         this.argumentPlaceholder = "{%n}";

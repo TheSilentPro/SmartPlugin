@@ -15,8 +15,8 @@ import java.util.function.Consumer;
  */
 public final class ItemUtils {
 
-    public static final NamespacedKey COOLDOWN_KEY = new NamespacedKey(SmartPlugin.getInstance().getPlugin(), "item_cooldown");
-    public static final NamespacedKey LAST_USED_KEY = new NamespacedKey(SmartPlugin.getInstance().getPlugin(), "item_lastused");
+    public static final NamespacedKey COOLDOWN_KEY = new NamespacedKey(SmartPlugin.getInstance(), "item_cooldown");
+    public static final NamespacedKey LAST_USED_KEY = new NamespacedKey(SmartPlugin.getInstance(), "item_lastused");
 
     private ItemUtils() {}
 

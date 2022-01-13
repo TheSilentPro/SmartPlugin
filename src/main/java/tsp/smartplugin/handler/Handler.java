@@ -16,7 +16,7 @@ public abstract class Handler<E extends Event> implements Listener {
     }
 
     public Handler() {
-        Bukkit.getPluginManager().registerEvents(this, SmartPlugin.getInstance().getPlugin());
+        Bukkit.getPluginManager().registerEvents(this, SmartPlugin.getInstance());
     }
 
     public abstract void handle(E event);

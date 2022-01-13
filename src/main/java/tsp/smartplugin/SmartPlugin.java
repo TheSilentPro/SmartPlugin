@@ -4,28 +4,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tsp.smartplugin.inventory.PaneListener;
 import tsp.smartplugin.server.Log;
 
-public class SmartPlugin {
+public abstract class SmartPlugin extends JavaPlugin {
 
     private static SmartPlugin instance;
-    private JavaPlugin plugin;
+
+    @Override
+    public void onEnable() {
+        instance = this;
+        Log.setName(getName());
+
+        new PaneListener(this);
+
+        // Call superclass method
+        onStart();
+    }
 
     /**
-     * Initialize SmartPlugin features.
-     *
-     * @param plugin The {@link JavaPlugin}
+     * Called after everything has been set internally
+     * Plugins should use this instead of onEnable.
      */
-    public static void init(JavaPlugin plugin) {
-        instance = new SmartPlugin();
-        instance.plugin = plugin;
-
-        Log.setName(plugin.getName());
-
-        new PaneListener(plugin);
-    }
-
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
+    public abstract void onStart();
 
     public static SmartPlugin getInstance() {
         return instance;
