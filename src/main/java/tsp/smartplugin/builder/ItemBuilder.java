@@ -1,6 +1,7 @@
 package tsp.smartplugin.builder;
 
 import com.google.common.collect.Multimap;
+import javafx.util.Pair;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class for building an {@link ItemStack}
@@ -112,6 +114,13 @@ public class ItemBuilder {
      * @param enchantment Enchantment to add
      * @param level Enchantment Level
      */
+    public ItemBuilder addEnchantment(@Nonnull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+        Validate.notNull(enchantment, "Enchantment must not be null");
+
+        meta.addEnchant(enchantment, level, ignoreLevelRestriction);
+        return this;
+    }
+
     public ItemBuilder addEnchantment(@Nonnull Enchantment enchantment, int level) {
         Validate.notNull(enchantment, "Enchantment must not be null");
 
@@ -124,42 +133,26 @@ public class ItemBuilder {
      *
      * @param enchantments The enchantments to add
      */
-    public ItemBuilder addEnchantments(@Nonnull Map<Enchantment, Integer> enchantments) {
+    public ItemBuilder addEnchantments(@Nonnull Map<Enchantment, Integer> enchantments, boolean ignoreLevelRestriction) {
         Validate.notNull(enchantments, "Enchantments must not be null");
 
         for (Map.Entry<Enchantment, Integer> enchantment : enchantments.entrySet()) {
-            meta.addEnchant(enchantment.getKey(), enchantment.getValue(), false);
+            meta.addEnchant(enchantment.getKey(), enchantment.getValue(), ignoreLevelRestriction);
         }
         return this;
     }
 
     /**
-     * Adds an unsafe enchantment
-     * <p>This method is unsafe and will ignore level restrictions or item type. Use at your own discretion.</p>
-     *
-     * @param enchantment The enchantment to add
-     * @param level Enchantment Level
-     * @
-     */
-    public ItemBuilder addUnsafeEnchantment(@Nonnull Enchantment enchantment, int level) {
-        Validate.notNull(enchantment, "Enchantment must not be null");
-
-        meta.addEnchant(enchantment, level, true);
-        return this;
-    }
-
-    /**
-     * Adds multiple unsafe enchantments at once
-     * <p>This method is unsafe and will ignore level restrictions or item type. Use at your own discretion.</p>
+     * Adds multiple enchantments at once
+     * Format: Enchantment, level, ignoreLevelRestriction
      *
      * @param enchantments The enchantments to add
      */
-    public ItemBuilder addUnsafeEnchantments(@Nonnull Map<Enchantment, Integer> enchantments) {
+    public ItemBuilder addEnchantments(@Nonnull Map<Enchantment, Pair<Integer, Boolean>> enchantments) {
         Validate.notNull(enchantments, "Enchantments must not be null");
 
-
-        for (Map.Entry<Enchantment, Integer> enchantment : enchantments.entrySet()) {
-            meta.addEnchant(enchantment.getKey(), enchantment.getValue(), true);
+        for (Map.Entry<Enchantment, Pair<Integer, Boolean>> enchantment : enchantments.entrySet()) {
+            meta.addEnchant(enchantment.getKey(), enchantment.getValue().getKey(), enchantment.getValue().getValue());
         }
         return this;
     }
@@ -197,7 +190,9 @@ public class ItemBuilder {
     public ItemBuilder setLore(@Nonnull String... lore) {
         Validate.notNull(lore, "Lore must not be null");
 
-        this.lore = Arrays.asList(colorize(lore));
+        this.lore = Arrays.stream(lore)
+                .map(this::colorize)
+                .collect(Collectors.toList());
         return this;
     }
 
@@ -326,11 +321,18 @@ public class ItemBuilder {
     /**
      * Set glowing
      *
-     * @param b Whether the item should glow
+     * @param glow Whether the item should glow
      */
-    public ItemBuilder setGlow(boolean b) {
-        addUnsafeEnchantment(item.getType() != Material.BOW ? Enchantment.ARROW_INFINITE : Enchantment.LUCK, 1);
-        addItemFlags(ItemFlag.HIDE_ENCHANTS);
+    public ItemBuilder setGlow(boolean glow, boolean hideEnchantment) {
+        if (glow) {
+            addEnchantment(item.getType() != Material.BOW ? Enchantment.ARROW_INFINITE : Enchantment.LUCK, 1, true);
+        } else {
+            removeEnchantment(item.getType() != Material.BOW ? Enchantment.ARROW_INFINITE : Enchantment.LUCK);
+        }
+
+        if (hideEnchantment) {
+            addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
         return this;
     }
 
@@ -375,7 +377,7 @@ public class ItemBuilder {
      *
      * @param b Whether to colorize strings
      */
-    public ItemBuilder setColorize(boolean b) {
+    public ItemBuilder colorize(boolean b) {
         colorize = b;
         return this;
     }
@@ -405,22 +407,6 @@ public class ItemBuilder {
             result.add(str);
         }
         return result;
-    }
-
-    /**
-     * Colorize an array of strings
-     *
-     * @param strings The array to colorize
-     * @return Colorized array of strings
-     */
-    private String[] colorize(String... strings) {
-        if (!colorize) return strings;
-
-        List<String> result = new ArrayList<>();
-        for (String s : strings) {
-            result.add(colorize(s));
-        }
-        return result.toArray(new String[0]);
     }
 
     /**
