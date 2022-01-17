@@ -16,7 +16,6 @@ public final class PersistentJsonDataType<T extends JsonElement> implements Pers
     public static final PersistentJsonDataType<JsonArray> JSON_ARRAY = new PersistentJsonDataType<>(JsonArray.class);
 
     private final Class<T> jsonClass;
-    private final JsonParser parser = new JsonParser();
 
     public PersistentJsonDataType(@Nonnull Class<T> jsonClass) {
         this.jsonClass = jsonClass;
@@ -39,7 +38,7 @@ public final class PersistentJsonDataType<T extends JsonElement> implements Pers
 
     @Override
     public T fromPrimitive(String primitive, PersistentDataAdapterContext context) {
-        JsonElement json = parser.parse(primitive);
+        JsonElement json = JsonParser.parseString(primitive);
 
         if (jsonClass.isInstance(json)) {
             return jsonClass.cast(json);

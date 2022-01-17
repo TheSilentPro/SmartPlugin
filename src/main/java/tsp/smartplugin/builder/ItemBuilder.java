@@ -204,7 +204,9 @@ public class ItemBuilder {
     public ItemBuilder setLore(@Nonnull List<String> lore) {
         Validate.notNull(lore, "Lore must not be null");
 
-        this.lore = colorize(lore);
+        this.lore = lore.stream()
+                .map(this::colorize)
+                .collect(Collectors.toList());
         return this;
     }
 
@@ -391,22 +393,6 @@ public class ItemBuilder {
         meta.setLore(lore);
         item.setItemMeta(meta);
         return item;
-    }
-
-    /**
-     * Colorize a list of strings
-     *
-     * @param string The list to colorize
-     * @return Colorized list of strings
-     */
-    private List<String> colorize(List<String> string) {
-        if (!colorize) return string;
-
-        List<String> result = new ArrayList<>();
-        for (String str : string) {
-            result.add(str);
-        }
-        return result;
     }
 
     /**

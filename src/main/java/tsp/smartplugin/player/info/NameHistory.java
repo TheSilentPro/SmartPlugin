@@ -15,8 +15,7 @@ public class NameHistory {
     }
 
     public Date getFormatted(String name) {
-        long timestamp = history.get(name);
-        return new Date(timestamp);
+        return new Date(history.get(name));
     }
 
     public long getTimestamp(String name) {

@@ -1,13 +1,17 @@
 package tsp.smartplugin.builder;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Zombie;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Class for easy entity creation
@@ -17,12 +21,16 @@ import java.util.List;
 public class EntityBuilder {
 
     private Class<? extends Entity> clazz;
-    private boolean randomized = false;
     private final List<Entity> passengers = new ArrayList<>();
     private final List<String> tags = new ArrayList<>();
 
+    private boolean randomized = false;
+    @Nullable
+    private Consumer<Entity> function = null;
+
     private boolean persistent;
     private boolean customNameVisible;
+    @Nullable
     private String customName;
 
     public EntityBuilder() {
@@ -68,7 +76,27 @@ public class EntityBuilder {
         return this;
     }
 
-    public Entity spawn(Location location) {
+    /**
+     * Function ran before the entity is spawned
+     *
+     * @param function Function to run before entity spawns. This runs after everything from the builder has been set.
+     * @return Builder
+     */
+    public EntityBuilder preSpawn(Consumer<Entity> function) {
+        this.function = function;
+        return this;
+    }
+
+    /**
+     * Spawn the entity
+     *
+     * @param location The location at which the entity will be spawned.
+     * @return The entity
+     */
+    public Entity spawn(@Nonnull Location location) {
+        Validate.notNull(location, "Location must not be null");
+        Validate.notNull(location.getWorld(), "Location world must not be null");
+
         return location.getWorld().spawn(location, clazz, randomized, entity -> {
             for (Entity passenger : passengers) {
                 entity.addPassenger(passenger);
@@ -83,6 +111,10 @@ public class EntityBuilder {
                 entity.setCustomName(customName);
             }
             entity.setCustomNameVisible(customNameVisible);
+
+            if (function != null) {
+                function.accept(entity);
+            }
         });
     }
 
