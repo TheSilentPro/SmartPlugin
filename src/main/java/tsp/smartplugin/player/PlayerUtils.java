@@ -3,7 +3,6 @@ package tsp.smartplugin.player;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tsp.smartplugin.mojang.MojangAPI;
