@@ -1,5 +1,6 @@
 package tsp.smartplugin.inventory.paged;
 
+import org.apache.commons.lang.Validate;
 import tsp.smartplugin.inventory.Button;
 import tsp.smartplugin.inventory.Page;
 import org.bukkit.Bukkit;
@@ -12,11 +13,12 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -45,10 +47,11 @@ public class PagedPane implements InventoryHolder {
     protected Button controlNext;
 
     /**
-     * @param pageSize The page size. tsp.smartaddon.inventory rows - 2
+     * @param pageSize The page size
      */
-    public PagedPane(int pageSize, int rows, String title) {
-        Objects.requireNonNull(title, "title can not be null!");
+    public PagedPane(int pageSize, int rows, @Nonnull String title) {
+        Validate.notNull(title, "title can not be null!");
+
         if (rows > 6) {
             throw new IllegalArgumentException("Rows must be <= 6, got " + rows);
         }
@@ -70,7 +73,9 @@ public class PagedPane implements InventoryHolder {
     /**
      * @param button The button to add
      */
-    public void addButton(Button button) {
+    public void addButton(@Nonnull Button button) {
+        Validate.notNull(button, "Button must not be null!");
+
         for (Map.Entry<Integer, Page> entry : pages.entrySet()) {
             if (entry.getValue().addButton(button)) {
                 if (entry.getKey() == currentIndex) {
@@ -86,7 +91,9 @@ public class PagedPane implements InventoryHolder {
         reRender();
     }
 
-    public void setButton(int i, Button button) {
+    public void setButton(int i, @Nonnull Button button) {
+        Validate.notNull(button, "Button must not be null!");
+
         for (Map.Entry<Integer, Page> entry : pages.entrySet()) {
             if (entry.getValue().setButton(i, button)) {
                 if (entry.getKey() == currentIndex) {
@@ -106,7 +113,9 @@ public class PagedPane implements InventoryHolder {
      * @param button The Button to remove
      */
     @SuppressWarnings("unused")
-    public void removeButton(Button button) {
+    public void removeButton(@Nonnull Button button) {
+        Validate.notNull(button, "Button must not be null!");
+
         for (Iterator<Map.Entry<Integer, Page>> iterator = pages.entrySet().iterator(); iterator.hasNext(); ) {
             Map.Entry<Integer, Page> entry = iterator.next();
             if (entry.getValue().removeButton(button)) {
@@ -167,7 +176,7 @@ public class PagedPane implements InventoryHolder {
     }
 
     /**
-     * Renders the tsp.smartaddon.inventory again
+     * Renders the inventory again
      */
     @SuppressWarnings("WeakerAccess")
     public void reRender() {
@@ -206,9 +215,9 @@ public class PagedPane implements InventoryHolder {
     }
 
     /**
-     * Get the object's tsp.smartaddon.inventory.
+     * Get the object's inventory.
      *
-     * @return The tsp.smartaddon.inventory.
+     * @return The inventory.
      */
     @Override
     public Inventory getInventory() {
@@ -226,10 +235,9 @@ public class PagedPane implements InventoryHolder {
     /**
      * Creates the controls
      *
-     * @param inventory The tsp.smartaddon.inventory
+     * @param inventory The inventory
      */
-    @SuppressWarnings("WeakerAccess")
-    protected void createControls(Inventory inventory) {
+    private void createControls(Inventory inventory) {
         // create separator
         fillRow(
                 inventory.getSize() / 9 - 2,
@@ -285,7 +293,7 @@ public class PagedPane implements InventoryHolder {
         }
     }
 
-    private void fillRow(int rowIndex, ItemStack itemStack, Inventory inventory) {
+    private void fillRow(int rowIndex, @Nonnull ItemStack itemStack, @Nonnull Inventory inventory) {
         int yMod = rowIndex * 9;
         for (int i = 0; i < 9; i++) {
             int slot = yMod + i;
@@ -300,10 +308,10 @@ public class PagedPane implements InventoryHolder {
      *
      * @return The item
      */
-    @SuppressWarnings("WeakerAccess")
-    protected ItemStack getItemStack(ItemStack item, String name, String... lore) {
-        ItemMeta itemMeta = item.getItemMeta();
+    private ItemStack getItemStack(@Nonnull ItemStack item, @Nullable String name, @Nullable String... lore) {
+        Validate.notNull(item, "Item must not be null!");
 
+        ItemMeta itemMeta = item.getItemMeta();
         if (name != null) {
             itemMeta.setDisplayName(color(name));
         }
@@ -315,8 +323,7 @@ public class PagedPane implements InventoryHolder {
         return item;
     }
 
-    @SuppressWarnings("WeakerAccess")
-    protected String color(String input) {
+    private String color(String input) {
         return ChatColor.translateAlternateColorCodes('&', input);
     }
 
@@ -328,20 +335,48 @@ public class PagedPane implements InventoryHolder {
         player.openInventory(getInventory());
     }
 
-    public void setBorderItem(ItemStack borderItem) {
-        this.borderItem = borderItem;
+    /**
+     * Sets the item for the border seperator
+     *
+     * @param item Border item
+     */
+    public void setBorderItem(@Nonnull ItemStack item) {
+        Validate.notNull(item, "Item must not be null!");
+
+        this.borderItem = item;
     }
 
-    public void setCurrentItem(ItemStack currentItem) {
-        this.currentItem = currentItem;
+    /**
+     * Sets the "current page" item
+     *
+     * @param item Current Item
+     */
+    public void setCurrentItem(@Nonnull ItemStack item) {
+        Validate.notNull(item, "Item must not be null!");
+
+        this.currentItem = item;
     }
 
-    public void setBackItem(ItemStack backItem) {
-        this.backItem = backItem;
+    /**
+     * Sets the previous page item
+     *
+     * @param item Back item
+     */
+    public void setBackItem(@Nonnull ItemStack item) {
+        Validate.notNull(item, "Item must not be null!");
+
+        this.backItem = item;
     }
 
-    public void setNextItem(ItemStack nextItem) {
-        this.nextItem = nextItem;
+    /**
+     * Sets the next page item
+     *
+     * @param item Next item
+     */
+    public void setNextItem(@Nonnull ItemStack item) {
+        Validate.notNull(item, "Item must not be null!");
+
+        this.nextItem = item;
     }
 
     public ItemStack getBorderItem() {

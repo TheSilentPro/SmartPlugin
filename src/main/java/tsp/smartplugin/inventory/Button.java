@@ -40,7 +40,6 @@ public class Button {
     /**
      * @return The icon
      */
-    @SuppressWarnings("WeakerAccess")
     public ItemStack getItemStack() {
         return itemStack;
     }
@@ -48,7 +47,6 @@ public class Button {
     /**
      * @param action The new action
      */
-    @SuppressWarnings("unused")
     public void setAction(Consumer<InventoryClickEvent> action) {
         this.action = action;
     }
@@ -56,7 +54,6 @@ public class Button {
     /**
      * @param event The event that triggered it
      */
-    @SuppressWarnings("WeakerAccess")
     public void onClick(InventoryClickEvent event) {
         action.accept(event);
     }
@@ -78,4 +75,5 @@ public class Button {
     public int hashCode() {
         return Objects.hash(ID);
     }
+
 }

@@ -1,9 +1,11 @@
 package tsp.smartplugin.inventory;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,9 @@ public class Page {
     /**
      * @param event The click event
      */
-    public void handleClick(InventoryClickEvent event) {
+    public void handleClick(@Nonnull InventoryClickEvent event) {
+        Validate.notNull(event, "InventoryClickEvent must not be null!");
+
         // user clicked in his own tsp.smartaddon.inventory. Silently drop it
         if (event.getRawSlot() > event.getInventory().getSize()) {
             return;
@@ -47,7 +51,9 @@ public class Page {
      *
      * @return True if the button was added, false if there was no space
      */
-    public boolean addButton(Button button) {
+    public boolean addButton(@Nonnull Button button) {
+        Validate.notNull(button, "Button must not be null!");
+
         if (!hasSpace()) {
             return false;
         }
@@ -61,7 +67,9 @@ public class Page {
      * @param button The {@link Button} to add
      * @return True if the button was added
      */
-    public boolean setButton(int i, Button button) {
+    public boolean setButton(int i, @Nonnull Button button) {
+        Validate.notNull(button, "Button must not be null!");
+
         if (!hasSpace()) {
             return false;
         }
@@ -75,14 +83,18 @@ public class Page {
      *
      * @return True if the button was removed
      */
-    public boolean removeButton(Button button) {
+    public boolean removeButton(@Nonnull Button button) {
+        Validate.notNull(button, "Button must not be null!");
+
         return buttons.remove(button);
     }
 
     /**
-     * @param inventory The tsp.smartaddon.inventory to render in
+     * @param inventory The inventory to render in
      */
-    public void render(Inventory inventory) {
+    public void render(@Nonnull Inventory inventory) {
+        Validate.notNull(inventory, "Inventory must not be null!");
+
         for (int i = 0; i < buttons.size(); i++) {
             Button button = buttons.get(i);
 
