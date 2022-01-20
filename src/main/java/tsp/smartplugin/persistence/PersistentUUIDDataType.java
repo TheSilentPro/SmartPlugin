@@ -1,4 +1,4 @@
-package tsp.smartplugin.data;
+package tsp.smartplugin.persistence;
 
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;

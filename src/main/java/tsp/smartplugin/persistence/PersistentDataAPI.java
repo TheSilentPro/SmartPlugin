@@ -1,4 +1,4 @@
-package tsp.smartplugin.data;
+package tsp.smartplugin.persistence;
 
 import java.util.Optional;
 import java.util.OptionalDouble;
