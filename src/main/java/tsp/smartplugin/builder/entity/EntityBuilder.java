@@ -1,8 +1,9 @@
-package tsp.smartplugin.builder;
+package tsp.smartplugin.builder.entity;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;
 
 import javax.annotation.Nonnull;
@@ -39,6 +40,10 @@ public class EntityBuilder {
 
     public EntityBuilder(Class<? extends Entity> entityClass) {
         this.clazz = entityClass;
+    }
+
+    public EntityBuilder(EntityType type) {
+        this.clazz = type.getEntityClass();
     }
 
     public EntityBuilder entityClass(Class<? extends Entity> clazz) {

@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -63,7 +64,8 @@ public final class StringUtils {
     }
 
     /**
-     * Colorize a string as gradient
+     * Colorize a string as gradient such that each character is a different color.
+     * If there are more characters than passed colors then the colors will repeat.
      *
      * @param string The string to colorize
      * @param colors The colors used for gradient
@@ -82,7 +84,8 @@ public final class StringUtils {
     }
 
     /**
-     * Colorize a string as gradient with the specified delimiter.
+     * Colorize a string as gradient such that each word will be a different color.
+     * Words will be split with the provided pattern.
      * Notice: This uses {@link String#split(String)} which compiles a pattern each time it is used!
      *
      * @param string The string to colorize
@@ -117,6 +120,45 @@ public final class StringUtils {
         }
 
         return builder.toString();
+    }
+
+    /**
+     * Capitalizes the first letter of the string.
+     *
+     * @param string The string
+     * @return String with the first letter capitalized
+     */
+    public static String capitalize(String string) {
+        return string.substring(0, 1).toUpperCase(Locale.ROOT) + string.substring(1);
+    }
+
+    /**
+     * Capitalize the first letter of every word in a string using the specified delimiter.
+     *
+     * @param string The string
+     * @param delimiter The split pattern
+     * @return String with capitalized words
+     */
+    public static String capitalizeWords(String string, Pattern delimiter) {
+        StringBuilder builder = new StringBuilder();
+        String[] words = delimiter.split(string);
+        for (String word : words) {
+            builder.append(capitalize(word)).append(delimiter);
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Capitalize the first letter of every word in a string with space (" ") as a delimiter.
+     * Notice: You should use the method above and provide an already compiled pattern!
+     *
+     * @param string The string
+     * @return String with capitalized words
+     * @see #capitalizeWords(String, Pattern)
+     */
+    public static String capitalizeWords(String string) {
+        return capitalizeWords(string, Pattern.compile(" "));
     }
 
 }

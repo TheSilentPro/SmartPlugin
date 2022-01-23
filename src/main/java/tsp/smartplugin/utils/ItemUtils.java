@@ -4,14 +4,17 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import tsp.smartplugin.SmartPlugin;
-import tsp.smartplugin.data.PersistentDataAPI;
+import tsp.smartplugin.persistence.PersistentDataAPI;
 
+import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
 /**
  * Utility class for an {@link ItemStack}
+ * This uses the {@link PersistentDataAPI} class
  *
  * @author TheSilentPro
+ * @see PersistentDataAPI
  */
 public final class ItemUtils {
 
@@ -26,7 +29,7 @@ public final class ItemUtils {
      * @param item The item to add a cooldown to
      * @param time The cooldown time
      */
-    public static void setCooldown(ItemStack item, long time) {
+    public static void setCooldown(@Nonnull ItemStack item, long time) {
         if (time > -1) {
             ItemMeta meta = item.getItemMeta();
             PersistentDataAPI.setLong(meta, COOLDOWN_KEY, time);
@@ -41,7 +44,7 @@ public final class ItemUtils {
      * @param item The item to check
      * @return Time left. Returns -1 if there is no cooldown
      */
-    public static long getTimeLeft(ItemStack item) {
+    public static long getTimeLeft(@Nonnull ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         long l = PersistentDataAPI.getLong(meta, LAST_USED_KEY, -1);
         long time = PersistentDataAPI.getLong(meta, COOLDOWN_KEY, -1);
@@ -60,7 +63,7 @@ public final class ItemUtils {
      * @param ready Ran when the item is used. Long is the cooldown the item was set to
      * @param timeleft Ran when the item is not ready. Long is time left
      */
-    public static void use(ItemStack item, long cooldown, Consumer<Long> ready, Consumer<Long> timeleft) {
+    public static void use(@Nonnull ItemStack item, long cooldown, @Nonnull Consumer<Long> ready, @Nonnull Consumer<Long> timeleft) {
         long time = getTimeLeft(item);
         if (time < 1) {
             ready.accept(cooldown);
@@ -76,7 +79,7 @@ public final class ItemUtils {
      * @param item The item to use
      * @param cooldown The cooldown for the item when used
      */
-    public static void use(ItemStack item, long cooldown) {
+    public static void use(@Nonnull ItemStack item, long cooldown) {
         long time = getTimeLeft(item);
         if (time < 1) {
             setCooldown(item, cooldown);

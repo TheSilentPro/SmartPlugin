@@ -9,6 +9,9 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
+    <name>SmartPlugin</name>
+    <description>Faster plugin creation</description>
+
     <repositories>
         <repository>
             <id>spigot-repo</id>
@@ -31,6 +34,13 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <!-- Compiler -->
             <plugin>

@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import tsp.smartplugin.SmartPlugin;
 import tsp.smartplugin.mojang.MojangAPI;
 import tsp.smartplugin.player.info.NameHistory;
 import tsp.smartplugin.player.info.PlayerInfo;
@@ -18,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
@@ -87,17 +89,9 @@ public final class PlayerUtils {
      * Retrieve information about a {@link UUID} from Mojang
      *
      * @param uuid The uuid to check
-     * @return Player Information
-     * @throws IOException Error
      */
-    public static PlayerInfo getPlayerInfo(UUID uuid) throws IOException {
-        return new PlayerInfo(uuid, getSkinInfo(uuid), getNameHistory(uuid));
-    }
-
-    public static PlayerInfo getPlayerInfo(String name) throws IOException {
-        UUID uuid = getUniqueId(name);
-
-        return new PlayerInfo(uuid, getSkinInfo(uuid), getNameHistory(uuid));
+    public static void getPlayerInfo(UUID uuid, Consumer<PlayerInfo> playerInfo) {
+        // TODO: finsih this brain melted
     }
 
     /**
@@ -105,31 +99,15 @@ public final class PlayerUtils {
      *
      * @param name The player name
      * @param timeout Connection timeout
-     * @return The unique id
-     * @throws IOException Error
      */
-    public static UUID getUniqueId(String name, int timeout) throws IOException {
-        JsonObject obj = MojangAPI.getUniqueId(name, timeout);
-        return UUID.fromString(obj.get("id").toString());
+    public static void getUniqueId(String name, int timeout, Consumer<UUID> uuid) {
+        SmartPlugin.getInstance().getMojangAPI().getUniqueId(name, timeout, json -> {
+            uuid.accept(UUID.fromString(json.get("id").toString()));
+        });
     }
 
-    public static UUID getUniqueId(String name) throws IOException {
-        return getUniqueId(name, 5000);
-    }
-
-    /**
-     * Retrieve the unique id of a player based on their name
-     *
-     * @param name The player name
-     * @return The unique id. Returns null if an error occurs
-     */
-    @Nullable
-    public static UUID getUniqueIdNoException(String name) {
-        try {
-            return getUniqueId(name);
-        } catch (IOException ignored) {
-            return null;
-        }
+    public static void getUniqueId(String name, Consumer<UUID> uuid) {
+        getUniqueId(name, 5000, uuid);
     }
 
     /**
@@ -137,23 +115,22 @@ public final class PlayerUtils {
      *
      * @param uuid The unique id to check
      * @param timeout Connection timeout
-     * @return Skin information
-     * @throws IOException Error
      */
-    public static SkinInfo getSkinInfo(UUID uuid, int timeout) throws IOException {
-        JsonObject obj = MojangAPI.getSkinInfo(uuid, timeout);
-        JsonArray properties = obj.get("properties").getAsJsonArray();
-        JsonObject textures = properties.get(0).getAsJsonObject();
-        
-        String id = obj.get("id").toString();
-        String name = obj.get("name").toString();
-        String value = textures.get("value").toString();
-        String signature = textures.get("signature").toString();
-        return new SkinInfo(id, name, value, signature);
+    public static void getSkinInfo(UUID uuid, int timeout, Consumer<SkinInfo> skinInfo){
+        SmartPlugin.getInstance().getMojangAPI().getSkinInfo(uuid, timeout, json -> {
+            JsonArray properties = json.get("properties").getAsJsonArray();
+            JsonObject textures = properties.get(0).getAsJsonObject();
+
+            String id = json.get("id").toString();
+            String name = json.get("name").toString();
+            String value = textures.get("value").toString();
+            String signature = textures.get("signature").toString();
+            skinInfo.accept(new SkinInfo(id, name, value, signature));
+        });
     }
 
-    public static SkinInfo getSkinInfo(UUID uuid) throws IOException {
-        return getSkinInfo(uuid, 5000);
+    public static void getSkinInfo(UUID uuid, Consumer<SkinInfo> skinInfo) {
+        getSkinInfo(uuid, 5000, skinInfo);
     }
 
     /**
@@ -161,24 +138,23 @@ public final class PlayerUtils {
      *
      * @param uuid The unique id
      * @param timeout Connection timeout
-     * @return Name History
-     * @throws IOException Error
      */
-    public static NameHistory getNameHistory(UUID uuid, int timeout) throws IOException {
-        JsonArray array = MojangAPI.getNameHistory(uuid, timeout);
-        Map<String, Long> history = new HashMap<>();
-        for (JsonElement e : array) {
-            JsonObject obj = e.getAsJsonObject();
-            String name = obj.get("name").toString();
-            long timestamp = obj.get("changedToAt") != null ? obj.get("changedToAt").getAsLong() : -1;
-            history.put(name, timestamp);
-        }
+    public static void getNameHistory(UUID uuid, int timeout, Consumer<NameHistory> nameHistory) {
+        SmartPlugin.getInstance().getMojangAPI().getNameHistory(uuid, timeout, json -> {
+            Map<String, Long> history = new HashMap<>();
+            for (JsonElement e : json) {
+                JsonObject obj = e.getAsJsonObject();
+                String name = obj.get("name").toString();
+                long timestamp = obj.get("changedToAt") != null ? obj.get("changedToAt").getAsLong() : -1;
+                history.put(name, timestamp);
+            }
 
-        return new NameHistory(uuid, history);
+            nameHistory.accept(new NameHistory(uuid, history));
+        });
     }
 
-    public static NameHistory getNameHistory(UUID uuid) throws IOException {
-        return getNameHistory(uuid, 5000);
+    public static void getNameHistory(UUID uuid, Consumer<NameHistory> nameHistory) {
+        getNameHistory(uuid, 5000, nameHistory);
     }
 
 }

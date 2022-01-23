@@ -2,6 +2,7 @@ package tsp.smartplugin.server;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import tsp.smartplugin.SmartPlugin;
 import tsp.smartplugin.utils.StringUtils;
 
 import java.io.PrintWriter;
@@ -14,7 +15,7 @@ import java.io.StringWriter;
  */
 public final class Log {
 
-    private static String name = "&bSmartPlugin";
+    private static String name = SmartPlugin.getInstance().getSettings().getPluginName();
     private static boolean debug = false;
 
     private Log() {}

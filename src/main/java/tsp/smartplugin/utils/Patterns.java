@@ -16,6 +16,9 @@ public final class Patterns {
     public static Pattern COLON;
     public static Pattern DOT;
     public static Pattern COMMA;
+    public static Pattern UNDERSCORE;
+    public static Pattern EQUALS;
+
     public static Pattern HEX_CODE;
 
     public static void compile() {
@@ -23,6 +26,8 @@ public final class Patterns {
         COLON = Pattern.compile(";");
         DOT = Pattern.compile(".");
         COMMA = Pattern.compile(",");
+        UNDERSCORE = Pattern.compile("_");
+        EQUALS = Pattern.compile("=");
         HEX_CODE = Pattern.compile("(#[A-Fa-f0-9]{6})");
     }
 

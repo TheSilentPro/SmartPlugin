@@ -2,15 +2,16 @@ package tsp.smartplugin.utils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,8 +43,9 @@ public final class SerializationUtils {
         main.addProperty("durability", item.getDurability());
 
         JsonObject enchantments = new JsonObject();
-        for (Map.Entry<Enchantment, Integer> enchantment : item.getEnchantments().entrySet()) {
-            enchantments.addProperty(enchantment.getKey().getKey().getKey(), enchantment.getValue());
+        for (Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
+            NamespacedKey key = entry.getKey().getKey();
+            enchantments.addProperty(key.getNamespace() + ":" + key.getKey(), entry.getValue());
         }
         main.add("enchantments", enchantments);
 
@@ -77,6 +79,7 @@ public final class SerializationUtils {
                     attribute.addProperty("operation", entry.getValue().getOperation().name());
                     attribute.addProperty("slot", entry.getValue().getSlot() != null ? entry.getValue().getSlot().name() : null);
                     attribute.addProperty("uuid", entry.getValue().getUniqueId().toString());
+
                     attributes.add(entry.getKey().name(), attribute);
                 }
             }
@@ -87,14 +90,14 @@ public final class SerializationUtils {
         return main;
     }
 
-    public static void deserializeItem(JsonObject json) {
+    public static ItemStack deserializeItem(JsonObject json) {
         ItemStack item = new ItemStack(Material.valueOf(json.get("material").getAsString()));
         item.setAmount(json.get("amount").getAsInt());
         item.setDurability(json.get("durability").getAsShort());
 
         JsonObject enchantments = json.get("enchantments").getAsJsonObject();
-        for (Map.Entry<String, JsonElement> enchantment : enchantments.entrySet()) {
-            item.addUnsafeEnchantment(Enchantment.getByName(enchantment.getKey()), enchantment.getValue().getAsInt());
+        for (Map.Entry<String, JsonElement> entry : enchantments.entrySet()) {
+            item.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.fromString(entry.getKey())), entry.getValue().getAsInt());
         }
 
         ItemMeta meta = item.getItemMeta();
@@ -114,9 +117,19 @@ public final class SerializationUtils {
         }
 
         JsonObject attributes = jsonMeta.get("attributes").getAsJsonObject();
-        for (int i = 0; i < attributes.size(); i++) {
-            // TODO: Finish
+        for (Map.Entry<String, JsonElement> entry : attributes.entrySet()) {
+            JsonObject jsonAttribute = entry.getValue().getAsJsonObject();
+            UUID uuid = UUID.fromString(jsonAttribute.get("uuid").getAsString());
+            String name = jsonAttribute.get("name").getAsString();
+            double amount = jsonAttribute.get("amount").getAsDouble();
+            AttributeModifier.Operation operation = AttributeModifier.Operation.valueOf(jsonAttribute.get("operation").getAsString());
+            EquipmentSlot slot = EquipmentSlot.valueOf(jsonAttribute.get("slot").getAsString());
+
+            meta.addAttributeModifier( Attribute.valueOf(entry.getKey()), new AttributeModifier(uuid, name, amount, operation, slot));
         }
+
+        item.setItemMeta(meta);
+        return item;
     }
 
     // Location

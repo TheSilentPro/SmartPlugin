@@ -1,7 +1,6 @@
-package tsp.smartplugin.builder;
+package tsp.smartplugin.builder.item;
 
 import com.google.common.collect.Multimap;
-import javafx.util.Pair;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,8 +17,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,7 +32,6 @@ public class ItemBuilder {
 
     private final ItemStack item;
     private ItemMeta meta;
-    private List<String> lore;
     private boolean colorize = true;
 
     /**
@@ -87,12 +85,12 @@ public class ItemBuilder {
     }
 
     /**
-     * Sets the amount of the item
+     * Sets the {@link Material} of the item
      *
-     * @param amount Amount
+     * @param material The item material
      */
-    public ItemBuilder amount(int amount) {
-        item.setAmount(amount);
+    public ItemBuilder material(Material material) {
+        item.setType(material);
         return this;
     }
 
@@ -109,19 +107,29 @@ public class ItemBuilder {
     }
 
     /**
+     * Sets the amount of the item
+     *
+     * @param amount Amount
+     */
+    public ItemBuilder amount(int amount) {
+        item.setAmount(amount);
+        return this;
+    }
+
+    /**
      * Adds an enchantment
      *
      * @param enchantment Enchantment to add
      * @param level Enchantment Level
      */
-    public ItemBuilder addEnchantment(@Nonnull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
+    public ItemBuilder enchant(@Nonnull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
         Validate.notNull(enchantment, "Enchantment must not be null");
 
         meta.addEnchant(enchantment, level, ignoreLevelRestriction);
         return this;
     }
 
-    public ItemBuilder addEnchantment(@Nonnull Enchantment enchantment, int level) {
+    public ItemBuilder enchant(@Nonnull Enchantment enchantment, int level) {
         Validate.notNull(enchantment, "Enchantment must not be null");
 
         meta.addEnchant(enchantment, level, false);
@@ -133,7 +141,7 @@ public class ItemBuilder {
      *
      * @param enchantments The enchantments to add
      */
-    public ItemBuilder addEnchantments(@Nonnull Map<Enchantment, Integer> enchantments, boolean ignoreLevelRestriction) {
+    public ItemBuilder enchant(@Nonnull Map<Enchantment, Integer> enchantments, boolean ignoreLevelRestriction) {
         Validate.notNull(enchantments, "Enchantments must not be null");
 
         for (Map.Entry<Enchantment, Integer> enchantment : enchantments.entrySet()) {
@@ -143,29 +151,28 @@ public class ItemBuilder {
     }
 
     /**
-     * Adds multiple enchantments at once
-     * Format: Enchantment, level, ignoreLevelRestriction
-     *
-     * @param enchantments The enchantments to add
-     */
-    public ItemBuilder addEnchantments(@Nonnull Map<Enchantment, Pair<Integer, Boolean>> enchantments) {
-        Validate.notNull(enchantments, "Enchantments must not be null");
-
-        for (Map.Entry<Enchantment, Pair<Integer, Boolean>> enchantment : enchantments.entrySet()) {
-            meta.addEnchant(enchantment.getKey(), enchantment.getValue().getKey(), enchantment.getValue().getValue());
-        }
-        return this;
-    }
-
-    /**
      * Removes an enchantment
      *
      * @param enchantment The enchantment to remove
      */
-    public ItemBuilder removeEnchantment(@Nonnull Enchantment enchantment) {
+    public ItemBuilder disenchant(@Nonnull Enchantment enchantment) {
         Validate.notNull(enchantment, "Enchantment must not be null");
 
         meta.removeEnchant(enchantment);
+        return this;
+    }
+
+    /**
+     * Remove multiple enchantments
+     *
+     * @param enchantments Collection of enchantments to remove
+     */
+    public ItemBuilder disenchant(@Nonnull Collection<Enchantment> enchantments) {
+        Validate.notNull(enchantments, "Enchantments must not be null!");
+
+        for (Enchantment enchantment : enchantments) {
+            meta.removeEnchant(enchantment);
+        }
         return this;
     }
 
@@ -177,8 +184,9 @@ public class ItemBuilder {
     public ItemBuilder addLore(@Nonnull String lore) {
         Validate.notNull(lore, "Lore must not be null");
 
-        this.lore.add(colorize(lore));
-        meta.setLore(this.lore);
+        List<String> loreList = meta.getLore();
+        loreList.add(colorize(lore));
+        meta.setLore(loreList);
         return this;
     }
 
@@ -190,9 +198,11 @@ public class ItemBuilder {
     public ItemBuilder setLore(@Nonnull String... lore) {
         Validate.notNull(lore, "Lore must not be null");
 
-        this.lore = Arrays.stream(lore)
+        this.meta.setLore(
+                Arrays.stream(lore)
                 .map(this::colorize)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+        );
         return this;
     }
 
@@ -204,9 +214,11 @@ public class ItemBuilder {
     public ItemBuilder setLore(@Nonnull List<String> lore) {
         Validate.notNull(lore, "Lore must not be null");
 
-        this.lore = lore.stream()
+        this.meta.setLore(
+                lore.stream()
                 .map(this::colorize)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+        );
         return this;
     }
 
@@ -216,9 +228,9 @@ public class ItemBuilder {
      * @param index The line to remove
      */
     public ItemBuilder removeLore(int index) {
-        if (index < 0 || lore == null) return this;
-        lore.remove(index);
-        meta.setLore(lore);
+        List<String> loreList = meta.getLore();
+        loreList.remove(index);
+        this.meta.setLore(loreList);
         return this;
     }
 
@@ -230,9 +242,9 @@ public class ItemBuilder {
     public ItemBuilder removeLore(@Nonnull String line) {
         Validate.notNull(line, "line must not be null");
 
-        if (!lore.contains(line)) return this;
-        lore.remove(line);
-        meta.setLore(lore);
+        List<String> loreList = this.meta.getLore();
+        loreList.remove(line);
+        this.meta.setLore(loreList);
         return this;
     }
 
@@ -327,9 +339,9 @@ public class ItemBuilder {
      */
     public ItemBuilder setGlow(boolean glow, boolean hideEnchantment) {
         if (glow) {
-            addEnchantment(item.getType() != Material.BOW ? Enchantment.ARROW_INFINITE : Enchantment.LUCK, 1, true);
+            enchant(item.getType() != Material.BOW ? Enchantment.ARROW_INFINITE : Enchantment.LUCK, 1, true);
         } else {
-            removeEnchantment(item.getType() != Material.BOW ? Enchantment.ARROW_INFINITE : Enchantment.LUCK);
+            disenchant(item.getType() != Material.BOW ? Enchantment.ARROW_INFINITE : Enchantment.LUCK);
         }
 
         if (hideEnchantment) {
@@ -384,13 +396,36 @@ public class ItemBuilder {
         return this;
     }
 
+    public BannerBuilder toBannerBuilder() {
+        return new BannerBuilder(build());
+    }
+
+    public BookBuilder toBookBuilder() {
+        return new BookBuilder(build());
+    }
+
+    public BundleBuilder toBundleBuilder() {
+        return new BundleBuilder(build());
+    }
+
+    public CompassBuilder toCompassBuilder() {
+        return new CompassBuilder(build());
+    }
+
+    public LeatherArmorBuilder toLeatherArmorBuilder() {
+        return new LeatherArmorBuilder(build());
+    }
+
+    public PotionBuilder toPotionBuilder() {
+        return new PotionBuilder(build());
+    }
+
     /**
      * Build the item
      *
      * @return The finished item
      */
     public ItemStack build() {
-        meta.setLore(lore);
         item.setItemMeta(meta);
         return item;
     }
