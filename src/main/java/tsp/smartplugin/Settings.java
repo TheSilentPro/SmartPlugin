@@ -10,7 +10,7 @@ public class Settings {
     private final JavaPlugin plugin;
     private String pluginName;
     private boolean compilePatterns = true;
-    private boolean callLivingEntityEvent = true;
+    private boolean callLivingEntityEvent = false;
 
     public Settings(JavaPlugin plugin) {
         this.plugin = plugin;
