@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -15,6 +16,8 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -386,13 +389,8 @@ public class ItemBuilder {
         return this;
     }
 
-    /**
-     * Set if strings should be colorized by the builder
-     *
-     * @param b Whether to colorize strings
-     */
-    public ItemBuilder colorize(boolean b) {
-        colorize = b;
+    public <T, Z> ItemBuilder set(NamespacedKey key, PersistentDataType<T, Z> type, Z value) {
+        getContainer().set(key, type, value);
         return this;
     }
 
@@ -428,6 +426,20 @@ public class ItemBuilder {
     public ItemStack build() {
         item.setItemMeta(meta);
         return item;
+    }
+
+    public PersistentDataContainer getContainer() {
+        return this.meta.getPersistentDataContainer();
+    }
+
+    /**
+     * Set if strings should be colorized by the builder
+     *
+     * @param b Whether to colorize strings
+     */
+    public ItemBuilder colorize(boolean b) {
+        colorize = b;
+        return this;
     }
 
     /**

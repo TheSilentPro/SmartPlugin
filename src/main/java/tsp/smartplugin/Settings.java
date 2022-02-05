@@ -2,7 +2,6 @@ package tsp.smartplugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import tsp.smartplugin.event.EntityDamageByEntityListener;
-import tsp.smartplugin.server.Log;
 import tsp.smartplugin.utils.Patterns;
 
 public class Settings {
@@ -14,11 +13,9 @@ public class Settings {
 
     public Settings(JavaPlugin plugin) {
         this.plugin = plugin;
-        Log.setName(pluginName = plugin.getName());
     }
 
     public void load() {
-        Log.setName(pluginName);
         if (compilePatterns) {
             Patterns.compile();
         }

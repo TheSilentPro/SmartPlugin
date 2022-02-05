@@ -15,7 +15,7 @@ import java.io.StringWriter;
  */
 public final class Log {
 
-    private static String name = SmartPlugin.getInstance().getSettings().getPluginName();
+    private static String name = SmartPlugin.getInstance().getName();
     private static boolean debug = false;
 
     private Log() {}
