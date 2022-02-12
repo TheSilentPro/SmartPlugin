@@ -12,7 +12,7 @@ public class BannerBuilder extends ItemBuilder {
     private final BannerMeta bannerMeta;
 
     public BannerBuilder(ItemStack item) {
-        super(item.getType());
+        super(item);
         bannerMeta = (BannerMeta) item.getItemMeta();
     }
 

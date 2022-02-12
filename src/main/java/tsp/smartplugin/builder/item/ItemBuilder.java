@@ -20,6 +20,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -187,7 +188,7 @@ public class ItemBuilder {
     public ItemBuilder addLore(@Nonnull String lore) {
         Validate.notNull(lore, "Lore must not be null");
 
-        List<String> loreList = meta.getLore();
+        List<String> loreList = meta.hasLore() ? meta.getLore() : new ArrayList<>();
         loreList.add(colorize(lore));
         meta.setLore(loreList);
         return this;
@@ -389,6 +390,15 @@ public class ItemBuilder {
         return this;
     }
 
+    /**
+     * Set persistent data
+     *
+     * @param key The namespace for this data
+     * @param type The type of data
+     * @param value The data value
+     * @param <T> Primitive
+     * @param <Z> Complex
+     */
     public <T, Z> ItemBuilder set(NamespacedKey key, PersistentDataType<T, Z> type, Z value) {
         getContainer().set(key, type, value);
         return this;
@@ -428,6 +438,11 @@ public class ItemBuilder {
         return item;
     }
 
+    /**
+     * Retrieve the {@link PersistentDataContainer} of the item
+     *
+     * @return The container
+     */
     public PersistentDataContainer getContainer() {
         return this.meta.getPersistentDataContainer();
     }
