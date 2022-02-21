@@ -7,8 +7,6 @@ import tsp.smartplugin.SmartPlugin;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.UnaryOperator;
 
 /**
@@ -18,7 +16,6 @@ import java.util.function.UnaryOperator;
  */
 public class Localization {
 
-    private final Map<String, String> MESSAGES = new HashMap<>(); // key, message
     private File messageFile;
     private FileConfiguration data;
     private String section;
@@ -43,7 +40,7 @@ public class Localization {
     public Localization() {
         this.messageFile = new File(SmartPlugin.getInstance().getDataFolder(), "messages.yml");
         this.data = YamlConfiguration.loadConfiguration(messageFile);
-        this.section = "messages";
+        this.section = "";
         this.argumentPlaceholder = "{%n}";
     }
 
@@ -58,7 +55,7 @@ public class Localization {
     }
 
     /**
-     * Set the section in which the messages should be kept under
+     * Set the section in which the messages will start to be looked at
      *
      * @param configSection The section
      */
@@ -83,7 +80,19 @@ public class Localization {
      */
     @Nullable
     public String getMessage(String key) {
-        return MESSAGES.get(key);
+        return data.getString(section + key);
+    }
+
+    /**
+     * Retrieve a message
+     *
+     * @param key The message key
+     * @param def The value returned if the original is not found
+     * @return The message
+     */
+    @Nullable
+    public String getMessage(String key, String def) {
+        return data.getString(section + key, def);
     }
 
     /**
@@ -114,43 +123,10 @@ public class Localization {
     }
 
     /**
-     * Retrieve the cached messages
-     *
-     * @return A {@link Map} containing the cached messages
+     * Loads the messages
      */
-    public Map<String, String> getMessagesCache() {
-        return MESSAGES;
-    }
-
-    /**
-     * Clears the messages cache
-     */
-    public void clear() {
-        MESSAGES.clear();
-    }
-
-    /**
-     * Loads the messages in memory cache
-     *
-     * @param deep If all sub-paths should be included
-     */
-    public void load(boolean deep) {
-        section = section.isEmpty() ? section : section + ".";
-        for (String key : data.getConfigurationSection(section).getKeys(deep)) {
-            MESSAGES.put(key, data.getString(section + key));
-        }
-    }
-
     public void load() {
-        load(true);
-    }
-
-    /**
-     * Reloads the message cache
-     */
-    public void reload() {
-        clear();
-        load();
+        this.data = YamlConfiguration.loadConfiguration(messageFile);
     }
 
     /**
