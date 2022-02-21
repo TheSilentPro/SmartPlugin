@@ -3,7 +3,7 @@ package tsp.smartplugin.utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import tsp.smartplugin.SmartPlugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -16,6 +16,7 @@ import java.util.function.UnaryOperator;
  */
 public class Localization {
 
+    private final JavaPlugin plugin;
     private File messageFile;
     private FileConfiguration data;
     private String section;
@@ -27,7 +28,8 @@ public class Localization {
      * @param section The section in which the messages will be kept under
      * @param placeholder The placeholder used for replacing arguments. %n = argument number
      */
-    public Localization(File file, String section, String placeholder) {
+    public Localization(JavaPlugin plugin, File file, String section, String placeholder) {
+        this.plugin = plugin;
         this.messageFile = file;
         this.data = YamlConfiguration.loadConfiguration(file);
         this.section = section;
@@ -37,11 +39,13 @@ public class Localization {
     /**
      * Constructs a new {@link Localization} instance with the default parameters
      */
-    public Localization() {
-        this.messageFile = new File(SmartPlugin.getInstance().getDataFolder(), "messages.yml");
-        this.data = YamlConfiguration.loadConfiguration(messageFile);
-        this.section = "";
-        this.argumentPlaceholder = "{%n}";
+    public Localization(JavaPlugin plugin) {
+        this(
+                plugin,
+                new File(plugin.getDataFolder(), "messages.yml"),
+                "",
+                "{%n}"
+        );
     }
 
     /**
@@ -127,6 +131,15 @@ public class Localization {
      */
     public void load() {
         this.data = YamlConfiguration.loadConfiguration(messageFile);
+    }
+
+    /**
+     * Creates the file from the resource directory
+     */
+    public void createFromResources() {
+        if (!messageFile.exists()) {
+            plugin.saveResource("messages.yml", false);
+        }
     }
 
     /**

@@ -2,6 +2,7 @@ package tsp.smartplugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import tsp.smartplugin.event.EntityDamageByEntityListener;
+import tsp.smartplugin.inventory.PaneListener;
 import tsp.smartplugin.utils.Patterns;
 
 public class Settings {
@@ -9,6 +10,7 @@ public class Settings {
     private final JavaPlugin plugin;
     private String pluginName;
     private boolean compilePatterns = true;
+    private boolean paneListener = false;
     private boolean callLivingEntityEvent = false;
 
     public Settings(JavaPlugin plugin) {
@@ -21,6 +23,9 @@ public class Settings {
         }
         if (callLivingEntityEvent) {
             plugin.getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(), plugin);
+        }
+        if (paneListener) {
+            new PaneListener(plugin);
         }
     }
 
@@ -49,11 +54,20 @@ public class Settings {
         return compilePatterns;
     }
 
-    public boolean isCallLivingEntityEvent() {
+    public boolean hasCallLivingEntityEvent() {
         return callLivingEntityEvent;
     }
 
     public void setCallLivingEntityEvent(boolean callLivingEntityEvent) {
         this.callLivingEntityEvent = callLivingEntityEvent;
     }
+
+    public void setPaneListener(boolean paneListener) {
+        this.paneListener = paneListener;
+    }
+
+    public boolean hasPaneListener() {
+        return paneListener;
+    }
+
 }
