@@ -5,9 +5,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class SmartCommand implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class SmartCommand implements CommandExecutor, TabCompleter {
 
     private String name;
     private String permission;
@@ -33,6 +37,10 @@ public class SmartCommand implements CommandExecutor {
 
     public void handle(CommandSender sender, String[] args) {}
 
+    public List<String> tabComplete(CommandSender sender, String[] args) {
+        return null;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!permission.isEmpty() && !sender.hasPermission(permission)) {
@@ -44,9 +52,19 @@ public class SmartCommand implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (!permission.isEmpty() && !sender.hasPermission(permission)) {
+            return Collections.emptyList();
+        }
+
+        return tabComplete(sender, args);
+    }
+
     public void register(JavaPlugin plugin) {
         PluginCommand pluginCommand = plugin.getCommand(name);
         pluginCommand.setExecutor(this);
+        pluginCommand.setTabCompleter(this);
     }
 
     private String colorize(String str) {
