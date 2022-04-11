@@ -130,6 +130,7 @@ public class Localization {
      * Loads the messages
      */
     public void load() {
+        createFromResources();
         this.data = YamlConfiguration.loadConfiguration(messageFile);
     }
 

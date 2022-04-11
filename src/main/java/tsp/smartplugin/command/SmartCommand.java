@@ -63,6 +63,10 @@ public class SmartCommand implements CommandExecutor, TabCompleter {
 
     public void register(JavaPlugin plugin) {
         PluginCommand pluginCommand = plugin.getCommand(name);
+        if (pluginCommand == null) {
+            throw new NullPointerException("Command is not registered in plugin.yml: " + name);
+        }
+
         pluginCommand.setExecutor(this);
         pluginCommand.setTabCompleter(this);
     }

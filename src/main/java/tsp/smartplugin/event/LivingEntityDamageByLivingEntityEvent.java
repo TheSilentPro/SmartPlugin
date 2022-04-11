@@ -6,6 +6,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 /**
  * Same as {@link EntityDamageByEntityEvent}, but only for {@link LivingEntity}'s.
+ * Requires to be registered via {@link EntityDamageByEntityListener}.
  *
  * @author TheSilentPro
  */

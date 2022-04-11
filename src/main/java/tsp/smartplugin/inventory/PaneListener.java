@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Listens for click events for the {@link PagedPane} and {@link Pane}
+ * Requires to be registered.
  */
 public class PaneListener implements Listener {
 
