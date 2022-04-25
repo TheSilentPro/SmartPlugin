@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -16,6 +17,7 @@ import java.util.regex.Pattern;
 public final class StringUtils {
 
     private StringUtils() {}
+    private static final Pattern HEX_PATTERN = Pattern.compile("(#[A-Fa-f0-9]{6})");
 
     /**
      * Join an array of strings into a single {@link String}
@@ -57,10 +59,26 @@ public final class StringUtils {
      * Colorize a single string
      *
      * @param string The string to colorize
-     * @return Colorized Stirng
+     * @return Colorized string
      */
     public static String colorize(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    /**
+     * Colorize a string with hex colors.
+     *
+     * @param string The string to colorize
+     * @return Colorized string
+     */
+    public static String hex(String string) {
+        Matcher matcher = HEX_PATTERN.matcher(string);
+        while (matcher.find()) {
+            // Bungee also has ChatColor under the same name for some reason, therefore full import is required
+            string = string.replace(matcher.group(), "" + net.md_5.bungee.api.ChatColor.of(matcher.group()));
+        }
+
+        return string;
     }
 
     /**
