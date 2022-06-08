@@ -35,6 +35,10 @@ public abstract class AbstractLogger {
         this.log(LogLevel.DEBUG, message);
     }
 
+    public void trace(String message) {
+        this.log(LogLevel.TRACE, message);
+    }
+
     public abstract void log(LogLevel level, String message);
 
     public String getName() {
@@ -50,7 +54,8 @@ public abstract class AbstractLogger {
         INFO,
         WARNING,
         ERROR,
-        DEBUG;
+        DEBUG,
+        TRACE;
 
         /**
          * Get the text color of the level
@@ -67,6 +72,8 @@ public abstract class AbstractLogger {
                     return "\u001B[31m"; // Red
                 case DEBUG:
                     return "\u001B[36m"; // Cyan
+                case TRACE:
+                    return "\\u001b[35m"; //
                 default:
                     return "\u001B[37m"; // White
             }
