@@ -11,7 +11,9 @@ public class EntityDamageByEntityListener implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof LivingEntity && event.getEntity() instanceof LivingEntity) {
-            Bukkit.getPluginManager().callEvent(LivingEntityDamageByLivingEntityEvent.of(event));
+            LivingEntityDamageByLivingEntityEvent effectiveEvent = LivingEntityDamageByLivingEntityEvent.of(event);
+            Bukkit.getPluginManager().callEvent(effectiveEvent);
+            event.setCancelled(effectiveEvent.isCancelled());
         }
     }
 

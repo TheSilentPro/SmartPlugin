@@ -188,7 +188,7 @@ public class ItemBuilder {
     public ItemBuilder addLore(@Nonnull String lore) {
         Validate.notNull(lore, "Lore must not be null");
 
-        List<String> loreList = meta.hasLore() ? meta.getLore() : new ArrayList<>();
+        List<String> loreList = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
         loreList.add(colorize(lore));
         meta.setLore(loreList);
         return this;
@@ -232,9 +232,11 @@ public class ItemBuilder {
      * @param index The line to remove
      */
     public ItemBuilder removeLore(int index) {
-        List<String> loreList = meta.getLore();
-        loreList.remove(index);
-        this.meta.setLore(loreList);
+        if (meta.getLore() != null) {
+            List<String> loreList = meta.getLore();
+            loreList.remove(index);
+            this.meta.setLore(loreList);
+        }
         return this;
     }
 
@@ -246,9 +248,11 @@ public class ItemBuilder {
     public ItemBuilder removeLore(@Nonnull String line) {
         Validate.notNull(line, "line must not be null");
 
-        List<String> loreList = this.meta.getLore();
-        loreList.remove(line);
-        this.meta.setLore(loreList);
+        if (meta.getLore() != null) {
+            List<String> loreList = this.meta.getLore();
+            loreList.remove(line);
+            this.meta.setLore(loreList);
+        }
         return this;
     }
 
@@ -351,6 +355,11 @@ public class ItemBuilder {
         if (hideEnchantment) {
             addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
+        return this;
+    }
+
+    public ItemBuilder setGlow(boolean glow) {
+        setGlow(glow, true);
         return this;
     }
 

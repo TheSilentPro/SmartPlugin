@@ -179,4 +179,24 @@ public final class StringUtils {
         return capitalizeWords(string, Pattern.compile(" "));
     }
 
+    /**
+     * Split the string on every capital letter.
+     *
+     * @param string The string
+     * @return String with split words
+     */
+    public static String splitCapitals(String string) {
+        StringBuilder builder = new StringBuilder();
+        char[] chars = string.toCharArray();
+        builder.append(chars[0]);
+        for (int i = 1; i < chars.length; i++) { // start from second character in order to avoid first capital
+            if (Character.isUpperCase(chars[i])) {
+                builder.append(" ");
+            }
+            builder.append(chars[i]);
+        }
+
+        return builder.toString();
+    }
+
 }
