@@ -4,6 +4,8 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import javax.annotation.Nonnull;
+
 /**
  * Same as {@link EntityDamageByEntityEvent}, but only for {@link LivingEntity}'s.
  * Requires to be registered via {@link EntityDamageByEntityListener}.
@@ -24,13 +26,19 @@ public class LivingEntityDamageByLivingEntityEvent extends EntityDamageByEntityE
     }
 
     @Override
+    @Nonnull
     public LivingEntity getDamager() {
         return (LivingEntity) super.getDamager();
     }
 
     @Override
+    @Nonnull
     public LivingEntity getEntity() {
         return (LivingEntity) super.getEntity();
+    }
+
+    public LivingEntity getVictim() {
+        return getEntity();
     }
 
 }
