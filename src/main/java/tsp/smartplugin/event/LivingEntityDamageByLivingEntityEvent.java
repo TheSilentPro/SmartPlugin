@@ -1,8 +1,8 @@
 package tsp.smartplugin.event;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
 
