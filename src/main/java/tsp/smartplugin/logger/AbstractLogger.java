@@ -73,7 +73,7 @@ public abstract class AbstractLogger {
                 case DEBUG:
                     return "\u001B[36m"; // Cyan
                 case TRACE:
-                    return "\\u001b[35m"; //
+                    return "\u001b[35m"; // Purple
                 default:
                     return "\u001B[37m"; // White
             }
