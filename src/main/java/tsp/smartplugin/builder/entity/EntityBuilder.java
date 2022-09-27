@@ -1,10 +1,11 @@
 package tsp.smartplugin.builder.entity;
 
-import org.apache.commons.lang.Validate;
+import com.google.common.annotations.Beta;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;
+import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -19,6 +20,7 @@ import java.util.function.Consumer;
  *
  * @author TheSilentPro
  */
+@Beta
 public class EntityBuilder {
 
     private Class<? extends Entity> clazz;

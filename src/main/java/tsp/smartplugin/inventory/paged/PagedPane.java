@@ -1,6 +1,5 @@
 package tsp.smartplugin.inventory.paged;
 
-import org.apache.commons.lang.Validate;
 import tsp.smartplugin.inventory.Button;
 import tsp.smartplugin.inventory.Page;
 import org.bukkit.Bukkit;
@@ -12,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -219,6 +219,7 @@ public class PagedPane implements InventoryHolder {
      *
      * @return The inventory.
      */
+    @Nonnull
     @Override
     public Inventory getInventory() {
         return inventory;
@@ -308,6 +309,7 @@ public class PagedPane implements InventoryHolder {
      *
      * @return The item
      */
+    @SuppressWarnings("ConstantConditions")
     private ItemStack getItemStack(@Nonnull ItemStack item, @Nullable String name, @Nullable String... lore) {
         Validate.notNull(item, "Item must not be null!");
 

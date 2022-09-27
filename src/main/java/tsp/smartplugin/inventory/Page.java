@@ -1,9 +1,9 @@
 package tsp.smartplugin.inventory;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
