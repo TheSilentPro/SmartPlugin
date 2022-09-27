@@ -1,6 +1,5 @@
 package tsp.smartplugin.inventory.single;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.entity.Player;
 import tsp.smartplugin.inventory.Button;
 import tsp.smartplugin.inventory.Page;
@@ -8,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
 
@@ -69,6 +69,8 @@ public class Pane implements InventoryHolder {
         page.render(inventory);
     }
 
+
+    @Nonnull
     @Override
     public Inventory getInventory() {
         return inventory;
