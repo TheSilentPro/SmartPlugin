@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import tsp.smartplugin.utils.Pair;
 import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
@@ -44,7 +45,7 @@ public class ItemBuilder {
      * @param material The material used for creating the new Object
      */
     public ItemBuilder(@Nonnull Material material) {
-        Validate.notNull(material, "Material must not be null");
+        Validate.notNull(material, "Material can not be null!");
 
         this.item = new ItemStack(material);
         this.meta = item.getItemMeta();
@@ -56,7 +57,7 @@ public class ItemBuilder {
      * @param item The item used for creating the new Object
      */
     public ItemBuilder(@Nonnull ItemStack item) {
-        Validate.notNull(item, "Item must not be null");
+        Validate.notNull(item, "Item can not be null!");
 
         this.item = item;
         this.meta = item.getItemMeta();
@@ -69,8 +70,8 @@ public class ItemBuilder {
      * @param meta The ItemMeta used for creating the new Object
      */
     public ItemBuilder(@Nonnull ItemStack item, @Nonnull ItemMeta meta) {
-        Validate.notNull(item, "Item must not be null");
-        Validate.notNull(meta, "Meta must not be null");
+        Validate.notNull(item, "Item can not be null!");
+        Validate.notNull(meta, "Meta can not be null!");
 
         this.item = item;
         this.meta = meta;
@@ -82,7 +83,7 @@ public class ItemBuilder {
      * @param item The item used for creating the new Object
      */
     public ItemBuilder(@Nonnull Item item) {
-        Validate.notNull(item, "Item must not be null");
+        Validate.notNull(item, "Item can not be null!");
 
         this.item = item.getItemStack();
         this.meta = item.getItemStack().getItemMeta();
@@ -104,7 +105,7 @@ public class ItemBuilder {
      * @param name Name
      */
     public ItemBuilder name(@Nonnull String name) {
-        Validate.notNull(name, "Name must not be null");
+        Validate.notNull(name, "Name can not be null!");
 
         meta.setDisplayName(colorize(name));
         return this;
@@ -124,19 +125,51 @@ public class ItemBuilder {
      * Adds an enchantment
      *
      * @param enchantment Enchantment to add
-     * @param level Enchantment Level
+     * @param level Enchantment level
+     * @param ignoreLevelRestriction Should restrictions be ignored
      */
     public ItemBuilder enchant(@Nonnull Enchantment enchantment, int level, boolean ignoreLevelRestriction) {
-        Validate.notNull(enchantment, "Enchantment must not be null");
+        Validate.notNull(enchantment, "Enchantment can not be null!");
 
         meta.addEnchant(enchantment, level, ignoreLevelRestriction);
         return this;
     }
 
+    /**
+     * Adds an enchantment
+     *
+     * @param enchantment Enchantment to add
+     * @param level Enchantment level
+     */
     public ItemBuilder enchant(@Nonnull Enchantment enchantment, int level) {
-        Validate.notNull(enchantment, "Enchantment must not be null");
+        Validate.notNull(enchantment, "Enchantment can not be null!");
 
         meta.addEnchant(enchantment, level, false);
+        return this;
+    }
+
+    /**
+     * Adds an enchantment
+     * 
+     * @param enchantment Enchantment to add
+     * @param ignoreRestrictions Should restrictions be ignored
+     */
+    public ItemBuilder enchant(@Nonnull Pair<Enchantment, Integer> enchantment, boolean ignoreRestrictions) {
+        Validate.notNull(enchantment, "Enchantment pair can not be null!");
+        
+        meta.addEnchant(enchantment.getKey(), enchantment.getValue(), ignoreRestrictions);
+        return this;
+    }
+
+    /**
+     * Adds an enchantment
+     *
+     * @param enchantment Enchantment to add
+     */
+    public ItemBuilder enchant(@Nonnull Pair<Enchantment, Integer> enchantment) {
+        Validate.notNull(enchantment, "Enchantment pair can not be null!");
+
+        enchant(enchantment.getKey(), enchantment.getValue(), false);
         return this;
     }
 
@@ -146,7 +179,7 @@ public class ItemBuilder {
      * @param enchantments The enchantments to add
      */
     public ItemBuilder enchant(@Nonnull Map<Enchantment, Integer> enchantments, boolean ignoreLevelRestriction) {
-        Validate.notNull(enchantments, "Enchantments must not be null");
+        Validate.notNull(enchantments, "Enchantments can not be null!");
 
         for (Map.Entry<Enchantment, Integer> enchantment : enchantments.entrySet()) {
             meta.addEnchant(enchantment.getKey(), enchantment.getValue(), ignoreLevelRestriction);
@@ -160,7 +193,7 @@ public class ItemBuilder {
      * @param enchantment The enchantment to remove
      */
     public ItemBuilder disenchant(@Nonnull Enchantment enchantment) {
-        Validate.notNull(enchantment, "Enchantment must not be null");
+        Validate.notNull(enchantment, "Enchantment can not be null!");
 
         meta.removeEnchant(enchantment);
         return this;
@@ -172,7 +205,7 @@ public class ItemBuilder {
      * @param enchantments Collection of enchantments to remove
      */
     public ItemBuilder disenchant(@Nonnull Collection<Enchantment> enchantments) {
-        Validate.notNull(enchantments, "Enchantments must not be null!");
+        Validate.notNull(enchantments, "Enchantments can not be null!");
 
         for (Enchantment enchantment : enchantments) {
             meta.removeEnchant(enchantment);
@@ -186,7 +219,7 @@ public class ItemBuilder {
      * @param lore The string to add
      */
     public ItemBuilder addLore(@Nonnull String lore) {
-        Validate.notNull(lore, "Lore must not be null");
+        Validate.notNull(lore, "Lore can not be null!");
 
         List<String> loreList = meta.getLore() != null ? meta.getLore() : new ArrayList<>();
         loreList.add(colorize(lore));
@@ -200,7 +233,7 @@ public class ItemBuilder {
      * @param lore The strings to add
      */
     public ItemBuilder setLore(@Nonnull String... lore) {
-        Validate.notNull(lore, "Lore must not be null");
+        Validate.notNull(lore, "Lore can not be null!");
 
         this.meta.setLore(
                 Arrays.stream(lore)
@@ -216,7 +249,7 @@ public class ItemBuilder {
      * @param lore The list to add
      */
     public ItemBuilder setLore(@Nonnull List<String> lore) {
-        Validate.notNull(lore, "Lore must not be null");
+        Validate.notNull(lore, "Lore can not be null!");
 
         this.meta.setLore(
                 lore.stream()
@@ -246,7 +279,7 @@ public class ItemBuilder {
      * @param line The line to remove
      */
     public ItemBuilder removeLore(@Nonnull String line) {
-        Validate.notNull(line, "line must not be null");
+        Validate.notNull(line, "line can not be null!");
 
         if (meta.getLore() != null) {
             List<String> loreList = this.meta.getLore();
@@ -262,7 +295,7 @@ public class ItemBuilder {
      * @param itemFlags The ItemFlag to add
      */
     public ItemBuilder addItemFlags(@Nonnull ItemFlag... itemFlags) {
-        Validate.notNull(item, "ItemFlag must not be null");
+        Validate.notNull(item, "ItemFlag can not be null!");
 
         meta.addItemFlags(itemFlags);
         return this;
@@ -274,7 +307,7 @@ public class ItemBuilder {
      * @param itemFlags The ItemFlag to remove
      */
     public ItemBuilder removeItemFlags(@Nonnull ItemFlag... itemFlags) {
-        Validate.notNull(itemFlags, "ItemFlag must not be null");
+        Validate.notNull(itemFlags, "ItemFlag can not be null!");
 
         meta.removeItemFlags(itemFlags);
         return this;
@@ -287,7 +320,7 @@ public class ItemBuilder {
      */
     @Deprecated
     public ItemBuilder setMaterialData(@Nonnull MaterialData materialData) {
-        Validate.notNull(materialData, "MaterialData must not be null");
+        Validate.notNull(materialData, "MaterialData can not be null!");
 
         item.setData(materialData);
         return this;
@@ -321,8 +354,8 @@ public class ItemBuilder {
      * @param modifier The attribute modifier
      */
     public ItemBuilder addAttributeModifier(@Nonnull Attribute attribute, @Nonnull AttributeModifier modifier) {
-        Validate.notNull(attribute, "Attribute must not be null");
-        Validate.notNull(modifier, "Modifier must not be null");
+        Validate.notNull(attribute, "Attribute can not be null!");
+        Validate.notNull(modifier, "Modifier can not be null!");
 
         meta.addAttributeModifier(attribute, modifier);
         return this;
@@ -334,7 +367,7 @@ public class ItemBuilder {
      * @param attributes The attributes to add
      */
     public ItemBuilder setAttributeModifiers(@Nonnull Multimap<Attribute, AttributeModifier> attributes) {
-        Validate.notNull(attributes, "Attributes must not be null");
+        Validate.notNull(attributes, "Attributes can not be null!");
 
         meta.setAttributeModifiers(attributes);
         return this;
@@ -369,7 +402,7 @@ public class ItemBuilder {
      * @param owner The owner
      */
     public ItemBuilder setOwner(@Nonnull OfflinePlayer owner) {
-        Validate.notNull(owner, "Owner must not be null");
+        Validate.notNull(owner, "Owner can not be null!");
 
         if (meta instanceof SkullMeta) {
             ((SkullMeta) meta).setOwningPlayer(owner);
@@ -393,7 +426,7 @@ public class ItemBuilder {
      * @param meta The item meta
      */
     public ItemBuilder setItemMeta(@Nonnull ItemMeta meta) {
-        Validate.notNull(meta, "Meta must not be null");
+        Validate.notNull(meta, "Meta can not be null!");
 
         this.meta = meta;
         return this;

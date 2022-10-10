@@ -29,4 +29,13 @@ public final class Validate {
         isTrue(expression, "Boolean can not be false!");
     }
 
+    public static <T> boolean canCast(Object object, Class<T> type) {
+        try {
+            type.cast(object);
+            return true;
+        } catch (ClassCastException ex) {
+            return false;
+        }
+    }
+
 }
