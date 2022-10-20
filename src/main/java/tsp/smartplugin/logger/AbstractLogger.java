@@ -1,10 +1,11 @@
 package tsp.smartplugin.logger;
 
 /**
- * An abstract logger that can be implemented by modules to fit their way of logging.
+ * An abstract logger that can be implemented to fit any way of logging.
  *
  * @author TheSilentPro (Silent)
  */
+@SuppressWarnings("unused")
 public abstract class AbstractLogger {
 
     private final String name;

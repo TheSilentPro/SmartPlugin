@@ -1,9 +1,10 @@
-package tsp.smartplugin.utils;
+package tsp.smartplugin.localization;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import tsp.smartplugin.utils.StringUtils;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -13,7 +14,10 @@ import java.util.function.UnaryOperator;
  * Class for a messages file
  *
  * @author TheSilentPro
+ * @deprecated Use {@link TranslatableLocalization} instead.
+ * @see TranslatableLocalization
  */
+@Deprecated
 public class Localization {
 
     private final JavaPlugin plugin;
@@ -139,7 +143,7 @@ public class Localization {
      */
     public void createFromResources() {
         if (!messageFile.exists()) {
-            plugin.saveResource("messages.yml", false);
+            plugin.saveResource("en.yml", false);
         }
     }
 

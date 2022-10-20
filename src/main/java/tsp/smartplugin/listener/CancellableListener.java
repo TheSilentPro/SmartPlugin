@@ -1,0 +1,18 @@
+package tsp.smartplugin.listener;
+
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+
+public abstract class CancellableListener<T extends Event & Cancellable> extends SmartListener<T> {
+
+    @Override
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onEvent(T event) {
+        if (!event.isCancelled()) {
+            handle(event);
+        }
+    }
+
+}
