@@ -1,4 +1,4 @@
-package tsp.smartplugin.inventory;
+package tsp.smartplugin.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,7 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import tsp.smartplugin.builder.item.ItemBuilder;
-import tsp.smartplugin.inventory.event.InputClickEvent;
+import tsp.smartplugin.menu.event.InputClickEvent;
 
 import javax.annotation.Nonnull;
 

@@ -1,8 +1,8 @@
 package tsp.smartplugin.utils;
 
-import tsp.smartplugin.inventory.Button;
-import tsp.smartplugin.inventory.Page;
-import tsp.smartplugin.inventory.Pane;
+import tsp.smartplugin.menu.Button;
+import tsp.smartplugin.menu.Page;
+import tsp.smartplugin.menu.Pane;
 
 public class PaneUtils {
 

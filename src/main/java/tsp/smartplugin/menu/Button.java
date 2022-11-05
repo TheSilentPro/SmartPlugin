@@ -1,8 +1,8 @@
-package tsp.smartplugin.inventory;
+package tsp.smartplugin.menu;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import tsp.smartplugin.inventory.event.ButtonClickHandler;
+import tsp.smartplugin.menu.event.ButtonClickHandler;
 import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;

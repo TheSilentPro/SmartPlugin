@@ -1,4 +1,4 @@
-package tsp.smartplugin.inventory;
+package tsp.smartplugin.menu;
 
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;

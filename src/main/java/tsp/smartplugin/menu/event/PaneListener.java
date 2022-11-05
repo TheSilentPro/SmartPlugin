@@ -1,4 +1,4 @@
-package tsp.smartplugin.inventory.event;
+package tsp.smartplugin.menu.event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -7,8 +7,8 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import tsp.smartplugin.inventory.InputPane;
-import tsp.smartplugin.inventory.Pane;
+import tsp.smartplugin.menu.InputPane;
+import tsp.smartplugin.menu.Pane;
 import tsp.smartplugin.listener.BukkitListener;
 
 public class PaneListener extends BukkitListener {

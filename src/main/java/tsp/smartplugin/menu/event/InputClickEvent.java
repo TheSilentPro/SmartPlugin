@@ -1,4 +1,4 @@
-package tsp.smartplugin.inventory.event;
+package tsp.smartplugin.menu.event;
 
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.inventory.InventoryClickEvent;

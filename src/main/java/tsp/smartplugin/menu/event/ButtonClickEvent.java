@@ -1,7 +1,7 @@
-package tsp.smartplugin.inventory.event;
+package tsp.smartplugin.menu.event;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
-import tsp.smartplugin.inventory.Button;
+import tsp.smartplugin.menu.Button;
 
 public class ButtonClickEvent {
 

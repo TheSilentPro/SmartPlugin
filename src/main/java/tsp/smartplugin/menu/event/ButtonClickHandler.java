@@ -1,4 +1,4 @@
-package tsp.smartplugin.inventory.event;
+package tsp.smartplugin.menu.event;
 
 @FunctionalInterface
 public interface ButtonClickHandler {
