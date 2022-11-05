@@ -1,5 +1,10 @@
 package tsp.smartplugin.localization;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
+import org.bukkit.entity.Player;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -33,6 +38,21 @@ public class Message {
     public Message receiver(UUID receiver) {
         this.receivers.add(receiver);
         return this;
+    }
+
+    public Message receivers(CommandSender... receivers) {
+        for (CommandSender receiver : receivers) {
+            if (receiver instanceof ConsoleCommandSender || receiver instanceof RemoteConsoleCommandSender) {
+                includeConsole();
+            } else if (receiver instanceof Player player) {
+                receiver(player.getUniqueId());
+            }
+        }
+        return this;
+    }
+
+    public Message receiver(CommandSender receiver) {
+        return receivers(receiver);
     }
 
     public Message function(UnaryOperator<String> function) {
