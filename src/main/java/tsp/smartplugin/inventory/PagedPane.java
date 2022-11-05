@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import tsp.smartplugin.utils.Validate;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
  * @author I Al Ianstaan
  * @author TheSilentPro
  */
-public class PagedPane implements InventoryHolder {
+public class PagedPane extends Pane {
 
     private final Inventory inventory;
 
@@ -48,8 +47,7 @@ public class PagedPane implements InventoryHolder {
      * @param pageSize The page size
      */
     public PagedPane(int pageSize, int rows, @Nonnull String title) {
-        Validate.notNull(title, "title can not be null!");
-
+        super(rows, title);
         if (rows > 6) {
             throw new IllegalArgumentException("Rows must be <= 6, got " + rows);
         }
@@ -189,6 +187,7 @@ public class PagedPane implements InventoryHolder {
     /**
      * @param event The {@link InventoryClickEvent}
      */
+    @Override
     @SuppressWarnings("WeakerAccess")
     public void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
@@ -209,7 +208,6 @@ public class PagedPane implements InventoryHolder {
         }
 
         pages.get(currentIndex).handleClick(event);
-
     }
 
     /**

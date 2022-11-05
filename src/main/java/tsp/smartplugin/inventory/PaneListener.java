@@ -1,6 +1,5 @@
 package tsp.smartplugin.inventory;
 
-import tsp.smartplugin.inventory.PagedPane;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,9 +20,6 @@ public class PaneListener implements Listener {
     public void onClick(InventoryClickEvent event) {
         InventoryHolder holder = event.getInventory().getHolder();
 
-        if (holder instanceof PagedPane) {
-            ((PagedPane) holder).onClick(event);
-        }
         if (holder instanceof Pane) {
             ((Pane) holder).onClick(event);
         }
