@@ -28,20 +28,13 @@ public class PluginLogger extends AbstractLogger {
     }
 
     private Level mapToLevel(LogLevel logLevel) {
-        switch (logLevel) {
-            case INFO:
-                return Level.INFO;
-            case WARNING:
-                return Level.WARNING;
-            case ERROR:
-                return Level.SEVERE;
-            case DEBUG:
-                return Level.FINE;
-            case TRACE:
-                return Level.FINER;
-            default:
-                return Level.ALL; // not possible
-        }
+        return switch (logLevel) {
+            case INFO -> Level.INFO;
+            case WARNING -> Level.WARNING;
+            case ERROR -> Level.SEVERE;
+            case DEBUG -> Level.FINE;
+            case TRACE -> Level.FINER;
+        };
     }
 
 }

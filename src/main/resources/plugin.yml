@@ -1,6 +1,0 @@
-name: ${project.name}
-description: ${project.description}
-
-main: tsp.smartplugin.SmartPlugin
-version: ${project.version}
-author: Silent

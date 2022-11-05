@@ -1,79 +1,55 @@
 package tsp.smartplugin.inventory;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import tsp.smartplugin.inventory.event.ButtonClickHandler;
+import tsp.smartplugin.utils.Validate;
 
-import java.util.Objects;
-import java.util.function.Consumer;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Optional;
 
-/**
- * A button
- */
 public class Button {
 
-    private static int counter;
-    private final int ID = counter++;
+    private final ItemStack item;
+    private final ButtonClickHandler buttonClickHandler;
 
-    private final ItemStack itemStack;
-    private Consumer<InventoryClickEvent> action;
+    public Button(@Nonnull ItemStack item, @Nullable ButtonClickHandler buttonClickHandler) {
+        Validate.notNull(item, "Item can not be null!");
 
-    /**
-     * @param itemStack The Item
-     */
-    @SuppressWarnings("unused")
-    public Button(ItemStack itemStack) {
-        this(itemStack, event -> {
-        });
+        this.item = item;
+        this.buttonClickHandler = buttonClickHandler;
     }
 
-    /**
-     * @param itemStack The Item
-     * @param action The action
-     */
-    public Button(ItemStack itemStack, Consumer<InventoryClickEvent> action) {
-        this.itemStack = itemStack;
-        this.action = action;
+    @Nonnull
+    public Optional<ButtonClickHandler> getClickHandler() {
+        return Optional.ofNullable(buttonClickHandler);
     }
 
-
-
-    /**
-     * @return The icon
-     */
-    public ItemStack getItemStack() {
-        return itemStack;
+    @Nonnull
+    public ItemStack getItem() {
+        return item;
     }
 
-    /**
-     * @param action The new action
-     */
-    public void setAction(Consumer<InventoryClickEvent> action) {
-        this.action = action;
-    }
+    public static class Builder {
 
-    /**
-     * @param event The event that triggered it
-     */
-    public void onClick(InventoryClickEvent event) {
-        action.accept(event);
-    }
+        private ItemStack item = new ItemStack(Material.GRASS_BLOCK);
+        private ButtonClickHandler buttonClickHandler = null;
 
-    // We do not want equals collisions. The default hashcode would not fulfil this contract.
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+        public Builder item(ItemStack item) {
+            this.item = item;
+            return this;
         }
-        if (!(o instanceof Button)) {
-            return false;
-        }
-        Button button = (Button) o;
-        return ID == button.ID;
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(ID);
+        public Builder clickHandler(ButtonClickHandler handler) {
+            this.buttonClickHandler = handler;
+            return this;
+        }
+
+        public Button build() {
+            return new Button(item, buttonClickHandler);
+        }
+
     }
 
 }

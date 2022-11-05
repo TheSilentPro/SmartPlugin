@@ -2,14 +2,19 @@ package tsp.smartplugin.localization;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -34,6 +39,7 @@ import java.util.regex.Pattern;
  * @author TheSilentPro (Silent)
  */
 @SuppressWarnings({"unused", "UnnecessaryToStringCall"})
+@ParametersAreNonnullByDefault
 public class TranslatableLocalization {
 
     private final JavaPlugin plugin;
@@ -57,7 +63,7 @@ public class TranslatableLocalization {
      * @param container The container for the messages. Default: {pluginDataFolder}/messages
      * @param defaultLanguage The default language file in your /resources directory. Default: en
      */
-    public TranslatableLocalization(@Nonnull JavaPlugin plugin, @Nonnull String messagesPath, @Nullable File container, @Nullable String defaultLanguage) {
+    public TranslatableLocalization(JavaPlugin plugin, String messagesPath, @Nullable File container, @Nullable String defaultLanguage) {
         notNull(plugin, "Plugin can not be null!");
         notNull(messagesPath, "Messages path can not be null!");
 
@@ -78,7 +84,7 @@ public class TranslatableLocalization {
      * @param plugin The plugin associated with this instance.
      * @param messagesPath The path for the messages in the /resources directory.
      */
-    public TranslatableLocalization(@Nonnull JavaPlugin plugin, @Nonnull String messagesPath) {
+    public TranslatableLocalization(JavaPlugin plugin, String messagesPath) {
         this(plugin, messagesPath, new File(plugin.getDataFolder() + "/messages"), "en");
     }
 
@@ -91,7 +97,7 @@ public class TranslatableLocalization {
      * @param message The message.
      * @see #sendMessage(UUID, String)
      */
-    private void sendTranslatedMessage(@Nonnull UUID uuid, @Nonnull String message) {
+    private void sendTranslatedMessage(UUID uuid, String message) {
         notNull(uuid, "UUID can not be null!");
         notNull(message, "Message can not be null!");
 
@@ -111,7 +117,7 @@ public class TranslatableLocalization {
      * @param function Optional: Function to apply to the message.
      * @param args Optional: Arguments for replacing. Format: {$argX} where X can be any argument number starting from 0.
      */
-    public void sendMessage(@Nonnull UUID receiver, @Nonnull String key, @Nullable UnaryOperator<String> function, @Nullable String... args) {
+    public void sendMessage(UUID receiver, String key, @Nullable UnaryOperator<String> function, @Nullable String... args) {
         notNull(receiver, "Receiver can not be null!");
         notNull(key, "Key can not be null!");
 
@@ -133,19 +139,19 @@ public class TranslatableLocalization {
         });
     }
 
-    public void sendMessage(@Nonnull UUID receiver, @Nonnull String key, @Nullable UnaryOperator<String> function) {
+    public void sendMessage(UUID receiver, String key, @Nullable UnaryOperator<String> function) {
         sendMessage(receiver, key, function, (String[]) null);
     }
 
-    public void sendMessage(@Nonnull UUID receiver, @Nonnull String key, @Nullable String... args) {
+    public void sendMessage(UUID receiver, String key, @Nullable String... args) {
         sendMessage(receiver, key, null, args);
     }
 
-    public void sendMessage(@Nonnull UUID receiver, @Nonnull String key) {
+    public void sendMessage(UUID receiver, String key) {
         sendMessage(receiver, key, null, (String[]) null);
     }
 
-    public void sendMessages(@Nonnull String key, @Nonnull UUID... receivers) {
+    public void sendMessages(String key, UUID... receivers) {
         for (UUID receiver : receivers) {
             sendMessage(receiver, key);
         }
@@ -159,7 +165,7 @@ public class TranslatableLocalization {
      * @return If present, the message, otherwise an empty {@link Optional}
      */
     @Nonnull
-    public Optional<String> getMessage(@Nonnull UUID uuid, @Nonnull String key) {
+    public Optional<String> getMessage(UUID uuid, String key) {
         notNull(uuid, "UUID can not be null!");
         notNull(key, "Key can not be null!");
 
@@ -182,13 +188,13 @@ public class TranslatableLocalization {
 
     private ConsoleMessageFunction logFunction = message -> Bukkit.getConsoleSender().sendMessage(message);
 
-    public void sendTranslatedConsoleMessage(@Nonnull String message) {
+    public void sendTranslatedConsoleMessage(String message) {
         notNull(message, "Message can not be null!");
 
         logFunction.logMessage(message);
     }
 
-    public void sendConsoleMessage(@Nonnull String key, @Nullable UnaryOperator<String> function, @Nullable String... args) {
+    public void sendConsoleMessage(String key, @Nullable UnaryOperator<String> function, @Nullable String... args) {
         notNull(key, "Key can not be null!");
 
         getConsoleMessage(key).ifPresent(message -> {
@@ -209,19 +215,19 @@ public class TranslatableLocalization {
         });
     }
 
-    public void sendConsoleMessage(@Nonnull String key, @Nullable UnaryOperator<String> function) {
+    public void sendConsoleMessage(String key, @Nullable UnaryOperator<String> function) {
         sendConsoleMessage(key, function, (String[]) null);
     }
 
-    public void sendConsoleMessage(@Nonnull String key, @Nullable String... args) {
+    public void sendConsoleMessage(String key, @Nullable String... args) {
         sendConsoleMessage(key, null, args);
     }
 
-    public void sendConsoleMessage(@Nonnull String key) {
+    public void sendConsoleMessage(String key) {
         sendConsoleMessage(key, null, (String[]) null);
     }
 
-    public Optional<String> getConsoleMessage(@Nonnull String key) {
+    public Optional<String> getConsoleMessage(String key) {
         notNull(key, "Key can not be null!");
 
         FileConfiguration messages = data.get(consoleLanguage != null ? consoleLanguage : defaultLanguage);
@@ -247,6 +253,42 @@ public class TranslatableLocalization {
 
     public void setLogFunction(ConsoleMessageFunction logFunction) {
         this.logFunction = logFunction;
+    }
+
+    // Auto Resolve
+
+    public void sendMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function, @Nullable String... args) {
+        if (receiver instanceof ConsoleCommandSender || receiver instanceof RemoteConsoleCommandSender) {
+            sendConsoleMessage(key, function, args);
+        } else if (receiver instanceof Player player) {
+            sendMessage(player.getUniqueId(), key, function, args);
+        }
+    }
+
+    public void sendMessage(CommandSender receiver, String key, @Nullable UnaryOperator<String> function) {
+        sendMessage(receiver, key, function, (String[]) null);
+    }
+
+    public void sendMessage(CommandSender receiver, String key) {
+        sendMessage(receiver, key, null);
+    }
+
+    public void sendMessage(String key, CommandSender... receivers) {
+        for (CommandSender receiver : receivers) {
+            sendMessage(receiver, key);
+        }
+    }
+
+    public void sendMessage(Message message) {
+        Validate.notNull(message, "Message can not be null!");
+
+        // Non-Console
+        message.getReceivers().forEach(uuid -> sendMessage(uuid, message.getText(), message.getFunction(), message.getArgs()));
+
+        // Console
+        if (message.shouldSendToConsole()) {
+            sendConsoleMessage(message.getText(), message.getFunction(), message.getArgs());
+        }
     }
 
     // Loader
@@ -389,7 +431,7 @@ public class TranslatableLocalization {
      * @param uuid The uuid of the receiver.
      * @param lang The language. (the language file's name, EXCLUDING EXTENSION!)
      */
-    public void setLanguage(@Nonnull UUID uuid, @Nonnull String lang) {
+    public void setLanguage(UUID uuid, String lang) {
         notNull(uuid, "UUID can not be null!");
         notNull(lang, "Lang can not be null!");
 
@@ -429,7 +471,7 @@ public class TranslatableLocalization {
      *
      * @param consoleLanguage The consoles' language.
      */
-    public void setConsoleLanguage(@Nonnull String consoleLanguage) {
+    public void setConsoleLanguage(String consoleLanguage) {
         notNull(consoleLanguage, "Language can not be null!");
         this.consoleLanguage = consoleLanguage;
     }
@@ -442,6 +484,7 @@ public class TranslatableLocalization {
      * @param <T> Type
      */
     private <T> void notNull(T object, String message) {
+        //noinspection ConstantConditions
         if (object == null) throw new NullPointerException(message);
     }
 

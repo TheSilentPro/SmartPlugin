@@ -1,111 +1,69 @@
 package tsp.smartplugin.inventory;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import tsp.smartplugin.utils.Validate;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
+@SuppressWarnings("unused")
 public class Page {
 
-    private final List<Button> buttons = new ArrayList<>();
-    private final int maxSize;
+    private final String title;
+    private final Map<Integer, Button> buttons;
 
-    public Page(int maxSize) {
-        this.maxSize = maxSize;
+    public Page(String title, Map<Integer, Button> buttons) {
+        this.title = title;
+        this.buttons = buttons != null ? buttons : new HashMap<>();
+    }
+
+    public Page(String title) {
+        this(title, null);
+    }
+
+    public void onClose(InventoryCloseEvent event) {}
+
+    public void render(Inventory inventory) {
+        for (Map.Entry<Integer, Button> entry : buttons.entrySet()) {
+            inventory.setItem(entry.getKey(), entry.getValue().getItem());
+        }
+    }
+
+    public void addButtons(Button... buttons) {
+        for (Button button : buttons) {
+            if (button != null) {
+                this.buttons.put(this.buttons.size() + 1, button);
+            }
+        }
+    }
+
+    public void setButton(int index, Button button) {
+        this.buttons.put(index, button);
+    }
+
+    public void removeButtons(int... indexes) {
+        for (int index : indexes) {
+            this.buttons.remove(index);
+        }
+    }
+
+    public Optional<Button> getButton(int index) {
+        return Optional.ofNullable(this.buttons.get(index));
     }
 
     /**
-     * @param event The click event
-     */
-    public void handleClick(@Nonnull InventoryClickEvent event) {
-        Validate.notNull(event, "InventoryClickEvent must not be null!");
-
-        // user clicked in his own tsp.smartaddon.inventory. Silently drop it
-        if (event.getRawSlot() > event.getInventory().getSize()) {
-            return;
-        }
-        // user clicked outside of the tsp.smartaddon.inventory
-        if (event.getSlotType() == InventoryType.SlotType.OUTSIDE) {
-            return;
-        }
-        if (event.getSlot() >= buttons.size()) {
-            return;
-        }
-        Button button = buttons.get(event.getSlot());
-        button.onClick(event);
-    }
-
-    /**
-     * @return True if there is space left
-     */
-    public boolean hasSpace() {
-        return buttons.size() < maxSize * 9;
-    }
-
-    /**
-     * @param button The {@link Button} to add
+     * The buttons map.
+     * Modifications to the map are projected onto the page.
      *
-     * @return True if the button was added, false if there was no space
+     * @return Modifiable map of buttons.
      */
-    public boolean addButton(@Nonnull Button button) {
-        Validate.notNull(button, "Button must not be null!");
-
-        if (!hasSpace()) {
-            return false;
-        }
-        buttons.add(button);
-
-        return true;
+    public Map<Integer, Button> getButtonsMap() {
+        return buttons;
     }
 
-    /**
-     * @param i Slot
-     * @param button The {@link Button} to add
-     * @return True if the button was added
-     */
-    public boolean setButton(int i, @Nonnull Button button) {
-        Validate.notNull(button, "Button must not be null!");
-
-        if (!hasSpace()) {
-            return false;
-        }
-        buttons.set(i, button);
-
-        return true;
+    public String getTitle() {
+        return title;
     }
 
-    /**
-     * @param button The {@link Button} to remove
-     *
-     * @return True if the button was removed
-     */
-    public boolean removeButton(@Nonnull Button button) {
-        Validate.notNull(button, "Button must not be null!");
-
-        return buttons.remove(button);
-    }
-
-    /**
-     * @param inventory The inventory to render in
-     */
-    public void render(@Nonnull Inventory inventory) {
-        Validate.notNull(inventory, "Inventory must not be null!");
-
-        for (int i = 0; i < buttons.size(); i++) {
-            Button button = buttons.get(i);
-
-            inventory.setItem(i, button.getItemStack());
-        }
-    }
-
-    /**
-     * @return True if this page is empty
-     */
-    public boolean isEmpty() {
-        return buttons.isEmpty();
-    }
 }

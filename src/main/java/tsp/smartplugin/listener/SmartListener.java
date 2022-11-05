@@ -1,5 +1,6 @@
 package tsp.smartplugin.listener;
 
+import com.google.common.annotations.Beta;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,7 @@ import tsp.smartplugin.utils.Validate;
 import javax.annotation.Nonnull;
 
 @SuppressWarnings("unused")
+@Beta
 public abstract class SmartListener<T extends Event> implements Listener {
 
     private final JavaPlugin plugin;

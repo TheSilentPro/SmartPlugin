@@ -15,9 +15,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.persistence.PersistentDataType;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 /**
  * This is a utility class that allows you to modify data for any Objects
  * that implement {@link PersistentDataHolder}.
@@ -26,6 +23,7 @@ import com.google.gson.JsonObject;
  * @author TheBusyBiscuit
  *
  */
+@SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
 public final class PersistentDataAPI {
 
@@ -88,14 +86,6 @@ public final class PersistentDataAPI {
         holder.getPersistentDataContainer().set(key, type, value);
     }
 
-    public static void setJsonObject(PersistentDataHolder holder, NamespacedKey key, JsonObject value) {
-        holder.getPersistentDataContainer().set(key, PersistentJsonDataType.JSON_OBJECT, value);
-    }
-
-    public static void setJsonArray(PersistentDataHolder holder, NamespacedKey key, JsonArray value) {
-        holder.getPersistentDataContainer().set(key, PersistentJsonDataType.JSON_ARRAY, value);
-    }
-
     /**
      * Set a {@link UUID} in a {@link PersistentDataContainer}, split as the 2 longs containing its bits.
      *
@@ -106,7 +96,7 @@ public final class PersistentDataAPI {
      * @param uuid
      *            The uuid to put in the container
      */
-    public static void setUUID(@Nonnull PersistentDataHolder holder, @Nonnull NamespacedKey key, @Nonnull UUID uuid) {
+    public static void setUUID(PersistentDataHolder holder, NamespacedKey key, UUID uuid) {
         holder.getPersistentDataContainer().set(key, PersistentUUIDDataType.TYPE, uuid);
     }
 
@@ -281,7 +271,7 @@ public final class PersistentDataAPI {
     public static <T, Z> boolean has(PersistentDataHolder holder, NamespacedKey key, PersistentDataType<T, Z> type) {
         return holder.getPersistentDataContainer().has(key, type);
     }
-
+    
     /**
      * Checks if the specified {@link PersistentDataHolder} has a {@link PersistentDataContainer} with the specified
      * key.
@@ -292,35 +282,7 @@ public final class PersistentDataAPI {
      *            The key to check for
      * @return {@code true} if the holder has a {@link PersistentDataContainer} with the specified key.
      */
-    public static boolean hasJsonObject(PersistentDataHolder holder, NamespacedKey key) {
-        return holder.getPersistentDataContainer().has(key, PersistentJsonDataType.JSON_OBJECT);
-    }
-
-    /**
-     * Checks if the specified {@link PersistentDataHolder} has a {@link PersistentDataContainer} with the specified
-     * key.
-     *
-     * @param holder
-     *            The {@link PersistentDataHolder} to check
-     * @param key
-     *            The key to check for
-     * @return {@code true} if the holder has a {@link PersistentDataContainer} with the specified key.
-     */
-    public static boolean hasJsonArray(PersistentDataHolder holder, NamespacedKey key) {
-        return holder.getPersistentDataContainer().has(key, PersistentJsonDataType.JSON_ARRAY);
-    }
-
-    /**
-     * Checks if the specified {@link PersistentDataHolder} has a {@link PersistentDataContainer} with the specified
-     * key.
-     *
-     * @param holder
-     *            The {@link PersistentDataHolder} to check
-     * @param key
-     *            The key to check for
-     * @return {@code true} if the holder has a {@link PersistentDataContainer} with the specified key.
-     */
-    public static boolean hasUUID(@Nonnull PersistentDataHolder holder, @Nonnull NamespacedKey key) {
+    public static boolean hasUUID(PersistentDataHolder holder, NamespacedKey key) {
         return holder.getPersistentDataContainer().has(key, PersistentUUIDDataType.TYPE);
     }
 
@@ -571,8 +533,6 @@ public final class PersistentDataAPI {
      *            The key of the data to retrieve
      * @param defaultVal
      *            The default value to use if no key is found
-     * @param defaultVal
-     *            The default value to use if no key is found
      * @return The float associated with this key or the default value if it doesn't exist
      */
     public static float getFloat(PersistentDataHolder holder, NamespacedKey key, float defaultVal) {
@@ -712,7 +672,7 @@ public final class PersistentDataAPI {
     }
 
     /**
-     * Get a integer array in a {@link PersistentDataContainer}, if the key doesn't exist it returns null.
+     * Get an integer array in a {@link PersistentDataContainer}, if the key doesn't exist it returns null.
      *
      * @param holder
      *            The {@link PersistentDataHolder} to retrieve the data from
@@ -856,94 +816,6 @@ public final class PersistentDataAPI {
     }
 
     /**
-     * Get a {@link JsonObject} in a {@link PersistentDataContainer}, if the key doesn't exist it returns null.
-     *
-     * @param holder
-     *            The {@link PersistentDataHolder} to retrieve the data from
-     * @param key
-     *            The key of the data to retrieve
-     * @return The long array associated with this key or null if it doesn't exist
-     */
-    public static JsonObject getJsonObject(PersistentDataHolder holder, NamespacedKey key) {
-        return holder.getPersistentDataContainer().get(key, PersistentJsonDataType.JSON_OBJECT);
-    }
-
-    /**
-     * This method returns an {@link Optional} describing the {@link JsonObject} found under the given key.
-     * An empty {@link Optional} will be returned if no value has been found.
-     *
-     * @see PersistentDataAPI#getJsonObject(PersistentDataHolder, NamespacedKey)
-     *
-     * @param holder
-     *            The {@link PersistentDataHolder} to retrieve the data from
-     * @param key
-     *            The key of the data to retrieve
-     * @return An Optional describing the result
-     */
-    public static Optional<JsonObject> getOptionalJsonObject(PersistentDataHolder holder, NamespacedKey key) {
-        return Optional.ofNullable(getJsonObject(holder, key));
-    }
-
-    /**
-     * Get a {@link JsonObject} in a {@link PersistentDataContainer} or the default value passed if no key exists.
-     *
-     * @param holder
-     *            The {@link PersistentDataHolder} to retrieve the data from
-     * @param key
-     *            The key of the data to retrieve
-     * @param defaultVal
-     *            The default value to use if no key is found
-     * @return The long array associated with this key or the default value if it doesn't exist
-     */
-    public static JsonObject getJsonObject(PersistentDataHolder holder, NamespacedKey key, JsonObject defaultVal) {
-        return holder.getPersistentDataContainer().getOrDefault(key, PersistentJsonDataType.JSON_OBJECT, defaultVal);
-    }
-
-    /**
-     * Get a {@link JsonArray} in a {@link PersistentDataContainer}, if the key doesn't exist it returns null.
-     *
-     * @param holder
-     *            The {@link PersistentDataHolder} to retrieve the data from
-     * @param key
-     *            The key of the data to retrieve
-     * @return The long array associated with this key or null if it doesn't exist
-     */
-    public static JsonArray getJsonArray(PersistentDataHolder holder, NamespacedKey key) {
-        return holder.getPersistentDataContainer().get(key, PersistentJsonDataType.JSON_ARRAY);
-    }
-
-    /**
-     * This method returns an {@link Optional} describing the {@link JsonArray} found under the given key.
-     * An empty {@link Optional} will be returned if no value has been found.
-     *
-     * @see PersistentDataAPI#getJsonObject(PersistentDataHolder, NamespacedKey)
-     *
-     * @param holder
-     *            The {@link PersistentDataHolder} to retrieve the data from
-     * @param key
-     *            The key of the data to retrieve
-     * @return An Optional describing the result
-     */
-    public static Optional<JsonArray> getOptionalJsonArray(PersistentDataHolder holder, NamespacedKey key) {
-        return Optional.ofNullable(getJsonArray(holder, key));
-    }
-
-    /**
-     * Get a {@link JsonArray} in a {@link PersistentDataContainer} or the default value passed if no key exists.
-     *
-     * @param holder
-     *            The {@link PersistentDataHolder} to retrieve the data from
-     * @param key
-     *            The key of the data to retrieve
-     * @param defaultVal
-     *            The default value to use if no key is found
-     * @return The long array associated with this key or the default value if it doesn't exist
-     */
-    public static JsonArray getJsonArray(PersistentDataHolder holder, NamespacedKey key, JsonArray defaultVal) {
-        return holder.getPersistentDataContainer().getOrDefault(key, PersistentJsonDataType.JSON_ARRAY, defaultVal);
-    }
-
-    /**
      * Get a {@link UUID} in a {@link PersistentDataContainer}, if the key doesn't exist it returns null.
      *
      * @param holder
@@ -953,7 +825,7 @@ public final class PersistentDataAPI {
      * @return The UUID associated with this key or null if it doesn't exist
      */
     @Nullable
-    public static UUID getUUID(@Nonnull PersistentDataHolder holder, @Nonnull NamespacedKey key) {
+    public static UUID getUUID(PersistentDataHolder holder, NamespacedKey key) {
         return holder.getPersistentDataContainer().get(key, PersistentUUIDDataType.TYPE);
     }
 
@@ -970,7 +842,7 @@ public final class PersistentDataAPI {
      * @return An {@link Optional} describing the result
      */
     @Nonnull
-    public static Optional<UUID> getOptionalUUID(@Nonnull PersistentDataHolder holder, @Nonnull NamespacedKey key) {
+    public static Optional<UUID> getOptionalUUID(PersistentDataHolder holder, NamespacedKey key) {
         return Optional.ofNullable(getUUID(holder, key));
     }
 
@@ -985,4 +857,5 @@ public final class PersistentDataAPI {
     public static void remove(PersistentDataHolder holder, NamespacedKey key) {
         holder.getPersistentDataContainer().remove(key);
     }
+
 }

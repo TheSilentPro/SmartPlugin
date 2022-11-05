@@ -38,13 +38,13 @@ public final class PersistentUUIDDataType implements PersistentDataType<int[], U
     }
 
     @Nonnull
-    public static UUID fromIntArray(@Nonnull int[] ints) {
-        Validate.notNull(ints, "The provided integer array cannot be null!");
-        Validate.isTrue(ints.length == 4, "The integer array must have a length of 4.");
+    public static UUID fromIntArray(@Nonnull int[] array) {
+        Validate.notNull(array, "The provided integer array cannot be null!");
+        Validate.isTrue(array.length == 4, "The integer array must have a length of 4.");
 
 
-        //return new UUID(ints[0] << 32L | ints[1] & 0xFFFFFFFFL, ints[2] << 32L | ints[3] & 0xFFFFFFFFL);
-        return new UUID((long) ints[0] << 32L | ints[1] & 0xFFFFFFFFL, (long) ints[2] << 32L | ints[3] & 0xFFFFFFFFL);
+        //return new UUID(array[0] << 32L | array[1] & 0xFFFFFFFFL, array[2] << 32L | array[3] & 0xFFFFFFFFL);
+        return new UUID((long) array[0] << 32L | array[1] & 0xFFFFFFFFL, (long) array[2] << 32L | array[3] & 0xFFFFFFFFL);
     }
 
     @Nonnull

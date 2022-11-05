@@ -21,6 +21,7 @@ import tsp.smartplugin.utils.Pair;
 import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -232,14 +233,16 @@ public class ItemBuilder {
      *
      * @param lore The strings to add
      */
-    public ItemBuilder setLore(@Nonnull String... lore) {
-        Validate.notNull(lore, "Lore can not be null!");
-
-        this.meta.setLore(
-                Arrays.stream(lore)
-                .map(this::colorize)
-                .collect(Collectors.toList())
-        );
+    public ItemBuilder setLore(@Nullable String... lore) {
+        if (lore == null) {
+            this.meta.setLore(null);
+        } else {
+            this.meta.setLore(
+                    Arrays.stream(lore)
+                            .map(this::colorize)
+                            .collect(Collectors.toList())
+            );
+        }
         return this;
     }
 
@@ -248,14 +251,16 @@ public class ItemBuilder {
      *
      * @param lore The list to add
      */
-    public ItemBuilder setLore(@Nonnull List<String> lore) {
-        Validate.notNull(lore, "Lore can not be null!");
-
-        this.meta.setLore(
-                lore.stream()
-                .map(this::colorize)
-                .collect(Collectors.toList())
-        );
+    public ItemBuilder setLore(@Nullable List<String> lore) {
+        if (lore == null) {
+            this.meta.setLore(null);
+        } else {
+            this.meta.setLore(
+                    lore.stream()
+                            .map(this::colorize)
+                            .collect(Collectors.toList())
+            );
+        }
         return this;
     }
 
@@ -443,6 +448,13 @@ public class ItemBuilder {
      */
     public <T, Z> ItemBuilder set(NamespacedKey key, PersistentDataType<T, Z> type, Z value) {
         getContainer().set(key, type, value);
+        return this;
+    }
+
+    public <T, Z> ItemBuilder setIfAbsent(NamespacedKey key, PersistentDataType<T, Z> type, Z value) {
+        if (!getContainer().has(key, type)) {
+            getContainer().set(key, type, value);
+        }
         return this;
     }
 
