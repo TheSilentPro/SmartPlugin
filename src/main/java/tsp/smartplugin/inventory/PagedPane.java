@@ -288,13 +288,8 @@ public class PagedPane extends Pane {
                     getCurrentPage(), getPageAmount()
             );
             ItemStack itemStack = getItemStack(currentItem, name, lore);
-            getPrevious().ifPresent(prev -> controlCurrent = new Button(itemStack, event -> previous.getValue().open(Bukkit.getPlayer(previous.getKey()))));
-           inventory.setItem(inventory.getSize() - 5, itemStack);
+            inventory.setItem(inventory.getSize() - 5, itemStack);
         }
-    }
-
-    public void setPrevious(Pair<UUID, Pane> previous) {
-        this.previous = previous;
     }
 
     private void fillRow(int rowIndex, @Nonnull ItemStack itemStack, @Nonnull Inventory inventory) {
@@ -351,6 +346,10 @@ public class PagedPane extends Pane {
         this.borderItem = item;
     }
 
+    public void setControlCurrent(Button controlCurrent) {
+        this.controlCurrent = controlCurrent;
+    }
+
     /**
      * Sets the "current page" item
      *
@@ -400,7 +399,4 @@ public class PagedPane extends Pane {
         return nextItem;
     }
 
-    public Optional<Pair<UUID, Pane>> getPrevious() {
-        return Optional.ofNullable(previous);
-    }
 }
