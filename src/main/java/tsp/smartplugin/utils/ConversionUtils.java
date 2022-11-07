@@ -1,8 +1,5 @@
 package tsp.smartplugin.utils;
 
-import tsp.smartplugin.utils.ConvertedIterable;
-import tsp.smartplugin.utils.ConvertedIterator;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Function;

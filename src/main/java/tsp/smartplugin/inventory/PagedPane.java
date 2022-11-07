@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import tsp.smartplugin.utils.Pair;
 import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
@@ -16,8 +17,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -38,10 +41,10 @@ public class PagedPane extends Pane {
     private ItemStack nextItem;
     private ItemStack currentItem;
 
-    @SuppressWarnings("WeakerAccess")
-    protected Button controlBack;
-    @SuppressWarnings("WeakerAccess")
-    protected Button controlNext;
+    private Button controlBack;
+    private Button controlNext;
+    private Button controlCurrent;
+    private Pair<UUID, Pane> previous;
 
     /**
      * @param pageSize The page size
@@ -192,22 +195,21 @@ public class PagedPane extends Pane {
     public void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        // back item
-        if (event.getSlot() == inventory.getSize() - 8) {
+        if (event.getRawSlot() == inventory.getSize() - 8) {
             if (controlBack != null) {
                 controlBack.onClick(event);
             }
-            return;
-        }
-        // next item
-        else if (event.getSlot() == inventory.getSize() - 2) {
+        } else if (event.getRawSlot() == inventory.getSize() - 2) {
             if (controlNext != null) {
                 controlNext.onClick(event);
             }
-            return;
+        } else if (event.getRawSlot() == inventory.getSize() - 5) {
+            if (controlCurrent != null) {
+                controlCurrent.onClick(event);
+            }
+        } else {
+            pages.get(currentIndex).handleClick(event);
         }
-
-        pages.get(currentIndex).handleClick(event);
     }
 
     /**
@@ -286,8 +288,13 @@ public class PagedPane extends Pane {
                     getCurrentPage(), getPageAmount()
             );
             ItemStack itemStack = getItemStack(currentItem, name, lore);
-            inventory.setItem(inventory.getSize() - 5, itemStack);
+            getPrevious().ifPresent(prev -> controlCurrent = new Button(itemStack, event -> previous.getValue().open(Bukkit.getPlayer(previous.getKey()))));
+           inventory.setItem(inventory.getSize() - 5, itemStack);
         }
+    }
+
+    public void setPrevious(Pair<UUID, Pane> previous) {
+        this.previous = previous;
     }
 
     private void fillRow(int rowIndex, @Nonnull ItemStack itemStack, @Nonnull Inventory inventory) {
@@ -393,4 +400,7 @@ public class PagedPane extends Pane {
         return nextItem;
     }
 
+    public Optional<Pair<UUID, Pane>> getPrevious() {
+        return Optional.ofNullable(previous);
+    }
 }
