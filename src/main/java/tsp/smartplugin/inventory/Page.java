@@ -36,7 +36,9 @@ public class Page {
             return;
         }
         Button button = buttons.get(event.getSlot());
-        button.onClick(event);
+        if (button != null) {
+            button.onClick(event);
+        }
     }
 
     /**
