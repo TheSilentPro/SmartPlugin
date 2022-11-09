@@ -70,11 +70,7 @@ public class Page {
     public boolean setButton(int i, @Nonnull Button button) {
         Validate.notNull(button, "Button must not be null!");
 
-        if (!hasSpace()) {
-            return false;
-        }
         buttons.set(i, button);
-
         return true;
     }
 

@@ -42,10 +42,8 @@ public class Pane implements InventoryHolder {
     public void setButton(int i, @Nonnull Button button) {
         Validate.notNull(button, "Button must not be null!");
 
-        if (page.hasSpace()) {
-            page.setButton(i, button);
-            reRender();
-        }
+        page.setButton(i, button);
+        reRender();
     }
 
     public void removeButton(@Nonnull Button button) {
