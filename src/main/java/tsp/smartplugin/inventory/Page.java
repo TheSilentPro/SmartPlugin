@@ -99,10 +99,8 @@ public class Page {
     public void render(@Nonnull Inventory inventory) {
         Validate.notNull(inventory, "Inventory must not be null!");
 
-        for (int i = 0; i < buttons.size(); i++) {
-            Button button = buttons.get(i);
-
-            inventory.setItem(i, button.getItemStack());
+        for (Map.Entry<Integer, Button> button : buttons.entrySet()) {
+            inventory.setItem(button.getKey(), button.getValue().getItemStack());
         }
     }
 
