@@ -6,12 +6,12 @@ import org.bukkit.inventory.Inventory;
 import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Page {
 
-    private final List<Button> buttons = new ArrayList<>();
+    private final Map<Integer, Button> buttons = new HashMap<>();
     private final int maxSize;
 
     public Page(int maxSize) {
@@ -57,7 +57,7 @@ public class Page {
         if (!hasSpace()) {
             return false;
         }
-        buttons.add(button);
+        buttons.put(buttons.size() + 1, button);
 
         return true;
     }
@@ -70,7 +70,7 @@ public class Page {
     public boolean setButton(int i, @Nonnull Button button) {
         Validate.notNull(button, "Button must not be null!");
 
-        buttons.set(i, button);
+        buttons.put(i, button);
         return true;
     }
 
@@ -82,7 +82,15 @@ public class Page {
     public boolean removeButton(@Nonnull Button button) {
         Validate.notNull(button, "Button must not be null!");
 
-        return buttons.remove(button);
+        Map.Entry<Integer, Button> match = null;
+        for (Map.Entry<Integer, Button> entry : buttons.entrySet()) {
+            if (entry.getValue().equals(button)) {
+                match = entry;
+                break;
+            }
+        }
+
+        return match != null && buttons.remove(match.getKey(), match.getValue());
     }
 
     /**

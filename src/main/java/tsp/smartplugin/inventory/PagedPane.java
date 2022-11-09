@@ -8,7 +8,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import tsp.smartplugin.utils.Pair;
 import tsp.smartplugin.utils.Validate;
 
 import javax.annotation.Nonnull;
@@ -17,10 +16,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +26,7 @@ import java.util.stream.Collectors;
  * @author I Al Ianstaan
  * @author TheSilentPro
  */
+@SuppressWarnings("unused")
 public class PagedPane extends Pane {
 
     private final Inventory inventory;
@@ -44,7 +42,6 @@ public class PagedPane extends Pane {
     private Button controlBack;
     private Button controlNext;
     private Button controlCurrent;
-    private Pair<UUID, Pane> previous;
 
     /**
      * @param pageSize The page size
