@@ -100,6 +100,9 @@ public class TranslatableLocalization {
     private void sendTranslatedMessage(UUID uuid, String message) {
         notNull(uuid, "UUID can not be null!");
         notNull(message, "Message can not be null!");
+        if (message.isEmpty()) {
+            return;
+        }
 
         Entity receiver = Bukkit.getEntity(uuid);
         if (receiver == null) {
@@ -190,6 +193,9 @@ public class TranslatableLocalization {
 
     public void sendTranslatedConsoleMessage(String message) {
         notNull(message, "Message can not be null!");
+        if (message.isEmpty()) {
+            return;
+        }
 
         logFunction.logMessage(message);
     }
