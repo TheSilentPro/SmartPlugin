@@ -56,8 +56,8 @@ public class PagedPane extends Pane {
         }
 
         this.borderItem = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        this.backItem = new ItemStack(Material.COAL_BLOCK);
-        this.nextItem = new ItemStack(Material.IRON_BLOCK);
+        this.backItem = new ItemStack(Material.ARROW);
+        this.nextItem = new ItemStack(Material.ARROW);
         this.currentItem = new ItemStack(Material.BOOK);
 
         this.pageSize = pageSize;

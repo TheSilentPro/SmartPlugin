@@ -59,7 +59,7 @@ public class Page {
         if (!hasSpace()) {
             return false;
         }
-        buttons.put(buttons.size() < 1 ? 0 : buttons.size() + 1, button);
+        buttons.put(buttons.size(), button);
         return true;
     }
 
